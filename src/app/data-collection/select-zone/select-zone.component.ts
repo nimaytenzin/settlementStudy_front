@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/dataServices';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
-interface Thromde {
+interface IThromde {
   id: number;
   thromde_name: string;
 }
 
-interface SpatialPlan{
+interface ISpatialPlan{
   id:number;
   lap_name:string;
 }
 
-interface Types{
+interface ITypes{
   id:number,
   name:string
 }
@@ -26,12 +27,22 @@ interface Types{
 })
 export class SelectZoneComponent implements OnInit {
 
-  title = 'cdrsAngular';
-  thromdes:Thromde[] =[];
-  spatialPlans:SpatialPlan[]=[];
 
-  selectedThromde = 0;
-  types:Types[]=[
+  constructor(
+    private router: Router,
+    private dataService: DataService,
+    private fb:FormBuilder
+  ) { }
+
+  title = 'cdrsAngular';
+  thromdes:IThromde[] =[];
+  spatialPlans:ISpatialPlan[]=[];
+
+
+  selectedThromde = 0; 
+  selectedSpatialPlan = {} as ISpatialPlan
+
+  types:ITypes[]=[
     {id: 1, name: "Plots" },
     {id: 2, name: "Buildings" },
     {id: 3, name: "Roads" },
@@ -40,10 +51,15 @@ export class SelectZoneComponent implements OnInit {
 
   ]
 
-  constructor(
+  //forms
+  planSelectForm = new FormGroup({
+    selectedThromde:new FormControl(''),
+    selectedSpatialPlan: new FormControl(''),
+    featureType: new FormControl('')
     
-    private dataService: DataService
-  ) { }
+  });
+  
+
   ngOnInit(): void {
     this.dataService.getThromdes().subscribe(res=>{
       console.log(res)
@@ -52,13 +68,28 @@ export class SelectZoneComponent implements OnInit {
   }
 
   onThromdeSelect(){
-    console.log("SELECTING THROMDE")
-    console.log(this.selectedThromde)
-    this.dataService.getSpatialPlansByThromde(this.selectedThromde).subscribe(res => {
+    this.dataService.getSpatialPlansByThromde(Number(this.planSelectForm.get('selectedThromde')?.value)).subscribe(res => {
       this.spatialPlans =res
       console.log(res)
       
     })
+  }
+  goToMapView(){
+    let selectedSpatialPlan = this.planSelectForm.get('selectedSpatialPlan')?.value
+    let selectedFeatureType = this.planSelectForm.get('featureType')?.value
+    if(
+        !selectedSpatialPlan
+      ){
+        alert("Please select a Spatial Plan")
+        return
+      }
+    if(!selectedFeatureType){
+      alert("Please select a Feature Type")
+      return 
+    }
+    sessionStorage.setItem("selectedSpatialPlanId",String(selectedSpatialPlan))
+    sessionStorage.setItem("featureType",String(selectedFeatureType))
+    this.router.navigate(['map'])
   }
 
 }

@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,8 +15,8 @@ import { MapViewComponent } from './map-view/map-view.component';
   ],
   imports: [
     CommonModule,
-    FormsModule
-
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class DataCollectionModule { }

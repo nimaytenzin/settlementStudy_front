@@ -21,10 +21,14 @@ export class MapViewComponent implements OnInit {
   plotMap = {} as L.GeoJSON;
   selectedFeature ={}
 
+  selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'))
+
   ngOnInit(): void {
     this.renderMap()
     this.fetchGeojson()
 
+    console.log("SELECTED SPATIAL PLAN",this.selectedSpatialPlanId)
+  
   }
 
 
@@ -69,7 +73,7 @@ export class MapViewComponent implements OnInit {
    
 
 
-    this.dataService.getPlotsByPlan(lap_id).subscribe(res => {
+    this.dataService.getPlotsByPlan(this.selectedSpatialPlanId).subscribe(res => {
     
       this.plotMap = L.geoJSON(res, {
         style: function (feature) {
