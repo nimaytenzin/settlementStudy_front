@@ -1,0 +1,157 @@
+<div class="h-screen flex flex-col w-full overflow-y-scroll">
+    <div id="plotDetails"
+        class="m-1 shadow-lg p-4 rounded font-normal font-mono text-gray-600 text-xs leading-relaxed tracking-wide ">
+       <div class="flex justify-between my-1">
+        <p>
+            Plot ID: 123
+        </p>
+        <p>
+            FeatureID: <strong> 123</strong>
+        </p>
+       </div>
+        <p>
+            Precinct: <strong> Insitutional</strong>
+        </p>
+        <p>
+            Max Height: <strong>4 Floors</strong>
+        </p>
+        <p>
+            Coverage: <strong>50%</strong>
+        </p>
+        <p>
+            Setbacks: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cum, velit!
+        </p>
+        <p class="mt-1">
+            Uses: Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse consequatur blanditiis, et eius odio
+            magnam quasi, earum tempora laborum assumenda maxime! Magnam ut hic reprehenderit illo est numquam nam
+            aperiam?
+        </p>
+    </div>
+
+    <div class="flex flex-col justify-center my-4 text-sm p-6">
+        <button class=" bg-green-500 text-white p-2 rounded" >
+            Take Photographic Evidence
+        </button>
+        <div class="flex mt-4 flex-wrap gap-1">
+            <div>
+                <img src="https://kuenselonline.com/wp-content/uploads/2020/07/building.jpg" class="h-20 w-auto" alt="">
+            </div>
+            <div>
+                <img src="https://www.dailybhutan.com/media/3168/tashichho-dzong-daily-bhutan-druk-asia2.jpg" class="h-20 w-auto" alt="">
+            </div>
+            <div>
+                <img src="https://kuenselonline.com/wp-content/uploads/2020/07/building.jpg" class="h-20 w-auto" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div id="formContainer" class="mt-2 p-4 text-sm">
+        <form>
+            <div class="my-2">
+                <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                    Development Status
+                </p>
+                <div class="w-full rounded-lg">
+                    <select class="
+                      w-full
+                      bg-gray-50
+                      border border-gray-300
+                      text-gray-900
+                      rounded
+                      p-2
+                      focus:outline-none
+                      focus:ring-blue-300
+                      focus:border-blue-300
+                    ">
+                    <option *ngFor="let status of developmentstatuses" [value]="status" class="w-full">
+                        {{ status }}
+                    </option>
+                    </select>
+                </div>
+            </div>
+            <div class="my-2">
+                <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                    Use
+                </p>
+                <div class="w-full rounded-lg">
+                    <select class="
+                      w-full
+                      bg-gray-50
+                      border border-gray-300
+                      text-gray-900
+                      rounded
+                      p-2
+                      focus:outline-none
+                      focus:ring-blue-300
+                      focus:border-blue-300
+                    ">
+                    <option *ngFor="let use of plotUses" [value]="use" class="w-full">
+                        {{ use }}
+                    </option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="my-2">
+                <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                   Maximum Building Height Constructed
+                </p>
+                <div class="w-full rounded-lg">
+                    <select class="
+                      w-full
+                      bg-gray-50
+                      border border-gray-300
+                      text-gray-900
+                      rounded
+                      p-2
+                      focus:outline-none
+                      focus:ring-blue-300
+                      focus:border-blue-300
+                    ">
+                    <option *ngFor="let height of BuildingHeights" [value]="height" class="w-full">
+                        {{ height }}
+                    </option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="my-2">
+                <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                    Remarks
+                </p>
+                <div class="w-full rounded-lg">
+                    <textarea 
+                        placeholder="Specific Use, Access"
+                        cols="10"
+                        class="
+                        w-full
+                        bg-gray-50
+                        border border-gray-300
+                        text-gray-900
+                        rounded
+                        p-2
+                        focus:outline-none
+                        focus:ring-blue-300
+                        focus:border-blue-300
+                        "
+                    ></textarea>
+                </div>
+            </div>
+
+
+           
+
+        </form>
+        <div class="flex w-full gap-2 mt-4">
+            <button class=" w-1/2 bg-green-500 text-white p-2 rounded" >
+                Save
+            </button>
+            <button class=" w-1/2 bg-gray-300 text-gray-400 p-2 rounded" (click)="goBackToMap()" >
+                Back To Map
+            </button>
+        </div>
+    </div>
+
+</div>

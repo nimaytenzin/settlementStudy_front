@@ -1,7 +1,7 @@
+import { Router } from '@angular/router';
 import { DataService } from './../../services/dataServices';
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import * as geojson from 'geojson';
 
 
 @Component({
@@ -12,7 +12,8 @@ import * as geojson from 'geojson';
 export class MapViewComponent implements OnInit {
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private router:Router
   ) { }
 
   googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
@@ -102,7 +103,8 @@ export class MapViewComponent implements OnInit {
             'dblclick':(e)=>{
               console.log("Double Click enter to view details")
               console.log(e)
-              
+
+              this.router.navigate(['editPlot'])
             }
           });
         }
