@@ -4,7 +4,7 @@ export const BuildingHeights:String[]=[
 ]
 
 export const PlotUses:String[]=[
-    "Mixed","Residentail","Commercial","Open Spaces","Institutional","Services","Recreational","Others"
+    "Mixed","Residential","Commercial","Open Spaces","Institutional","Services","Recreational","Others"
 ]
 
 export const DevelopmentStatuses:String[]=[

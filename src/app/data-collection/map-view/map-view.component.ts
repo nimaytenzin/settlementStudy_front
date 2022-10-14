@@ -98,12 +98,12 @@ export class MapViewComponent implements OnInit {
             'click':(e)=>{
               this.map.fitBounds(e.target.getBounds())
               this.selectedFeature = e.target.feature.properties
-              console.log(e.target.feature.properties)
+             
             },
             'dblclick':(e)=>{
               console.log("Double Click enter to view details")
               console.log(e)
-
+              sessionStorage.setItem("plotFid", e.target.feature.properties.gid)
               this.router.navigate(['editPlot'])
             }
           });

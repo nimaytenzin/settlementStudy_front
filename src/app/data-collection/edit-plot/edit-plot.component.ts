@@ -1,6 +1,8 @@
+import { DataService, IPlot } from './../../services/dataServices';
 import { BuildingHeights, DevelopmentStatuses, PlotUses } from './../../services/staticData';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 
@@ -12,18 +14,79 @@ import { Component, OnInit } from '@angular/core';
 export class EditPlotComponent implements OnInit {
 
   constructor(
-    private router:Router
+    private router:Router,
+    private dataService:DataService
   ) { }
 
-  developmentstatuses:String[] = DevelopmentStatuses
-  BuildingHeights:String[] = BuildingHeights
-  plotUses:String[] = PlotUses
+  plotFeatureId:number = Number(sessionStorage.getItem("plotFid"));
+  developmentstatuses:String[] = DevelopmentStatuses;
+  BuildingHeights:String[] = BuildingHeights;
+  plotUses:String[] = PlotUses;
+
+  detailsAdded:boolean = false;
+
+  editPlotForm = new FormGroup({
+    developmentStatus:new FormControl(''),
+    plotUse: new FormControl(''),
+    maxHeight: new FormControl(''),
+    remarks:new FormControl('')
+  });
+
+  plotDetails = {
+    setback_e:"NA",
+    parking:0,
+  } as IPlot;
 
   ngOnInit(): void {
+    this.fetchDataIfExists()
+  }
+
+  fetchDataIfExists(){
+    this.dataService.getPlotDetails(this.plotFeatureId).subscribe(res=>{
+      if(res.data){
+        console.log("PATCH THE FORM VALUES")
+        console.log(res)
+        this.detailsAdded = true;
+
+        this.editPlotForm.patchValue({
+          developmentStatus: res.data.d_status,
+          plotUse: res.data.plot_use,
+          maxHeight:res.data.max_height,
+          remarks: res.data.remarks
+  
+        })
+      }else{
+        this.detailsAdded = false;
+      }
+    })
   }
 
   goBackToMap(){
     this.router.navigate(['map'])
+  }
+
+  saveData(){
+    this.plotDetails.fid = this.plotFeatureId;
+    this.plotDetails.lap_id = Number(sessionStorage.getItem('lap_id'));
+    this.plotDetails.d_status = this.editPlotForm.get('developmentStatus')?.value! ;
+    this.plotDetails.max_height = this.editPlotForm.get('maxHeight')?.value!;
+    this.plotDetails.plot_use = this.editPlotForm.get("plotUse")?.value!;
+    this.plotDetails.remarks = this.editPlotForm.get("remarks")?.value!;
+
+    console.log(this.plotDetails, "NEW PLOT")
+
+    if(this.detailsAdded){
+      alert("Details added update route")
+    }else{
+      alert("Details not added, post Data")
+      this.dataService.postPlotDetails(this.plotDetails).subscribe(res=>{
+       if(res.status === "Success"){
+        this.dataService.markPlotShapefileAsCompleted(1).subscribe(resp=>{
+          console.log(resp, "MARKED AS DOne")
+        })
+       }
+      })
+    }
   }
 
 }

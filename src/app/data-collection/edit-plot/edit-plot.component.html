@@ -28,7 +28,7 @@
         </p>
     </div>
 
-    <div class="flex flex-col justify-center my-4 text-sm p-6">
+    <div class="flex flex-col justify-center my-4 text-sm p-6" *ngIf="detailsAdded">
         <button class=" bg-green-500 text-white p-2 rounded" >
             Take Photographic Evidence
         </button>
@@ -46,23 +46,26 @@
     </div>
 
     <div id="formContainer" class="mt-2 p-4 text-sm">
-        <form>
+        <form  [formGroup]="editPlotForm">
             <div class="my-2">
                 <p class="text-sm mb-2 text-gray-700 text-left w-full">
                     Development Status
                 </p>
                 <div class="w-full rounded-lg">
-                    <select class="
-                      w-full
-                      bg-gray-50
-                      border border-gray-300
-                      text-gray-900
-                      rounded
-                      p-2
-                      focus:outline-none
-                      focus:ring-blue-300
-                      focus:border-blue-300
-                    ">
+                    <select 
+                        formControlName="developmentStatus"
+                        class="
+                        w-full
+                        bg-gray-50
+                        border border-gray-300
+                        text-gray-900
+                        rounded
+                        p-2
+                        focus:outline-none
+                        focus:ring-blue-300
+                        focus:border-blue-300
+                        "
+                    >
                     <option *ngFor="let status of developmentstatuses" [value]="status" class="w-full">
                         {{ status }}
                     </option>
@@ -74,17 +77,20 @@
                     Use
                 </p>
                 <div class="w-full rounded-lg">
-                    <select class="
-                      w-full
-                      bg-gray-50
-                      border border-gray-300
-                      text-gray-900
-                      rounded
-                      p-2
-                      focus:outline-none
-                      focus:ring-blue-300
-                      focus:border-blue-300
-                    ">
+                    <select 
+                        formControlName="plotUse"
+                        class="
+                        w-full
+                        bg-gray-50
+                        border border-gray-300
+                        text-gray-900
+                        rounded
+                        p-2
+                        focus:outline-none
+                        focus:ring-blue-300
+                        focus:border-blue-300
+                        "
+                    >
                     <option *ngFor="let use of plotUses" [value]="use" class="w-full">
                         {{ use }}
                     </option>
@@ -98,17 +104,20 @@
                    Maximum Building Height Constructed
                 </p>
                 <div class="w-full rounded-lg">
-                    <select class="
-                      w-full
-                      bg-gray-50
-                      border border-gray-300
-                      text-gray-900
-                      rounded
-                      p-2
-                      focus:outline-none
-                      focus:ring-blue-300
-                      focus:border-blue-300
-                    ">
+                    <select 
+                        formControlName="maxHeight"
+                        class="
+                            w-full
+                            bg-gray-50
+                            border border-gray-300
+                            text-gray-900
+                            rounded
+                            p-2
+                            focus:outline-none
+                            focus:ring-blue-300
+                            focus:border-blue-300
+                        "
+                    >
                     <option *ngFor="let height of BuildingHeights" [value]="height" class="w-full">
                         {{ height }}
                     </option>
@@ -123,6 +132,7 @@
                 </p>
                 <div class="w-full rounded-lg">
                     <textarea 
+                        formControlName="remarks"
                         placeholder="Specific Use, Access"
                         cols="10"
                         class="
@@ -145,7 +155,7 @@
 
         </form>
         <div class="flex w-full gap-2 mt-4">
-            <button class=" w-1/2 bg-green-500 text-white p-2 rounded" >
+            <button class=" w-1/2 bg-green-500 text-white p-2 rounded" (click)="saveData()">
                 Save
             </button>
             <button class=" w-1/2 bg-gray-300 text-gray-400 p-2 rounded" (click)="goBackToMap()" >
