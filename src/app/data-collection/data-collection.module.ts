@@ -6,6 +6,9 @@ import { SelectZoneComponent } from './select-zone/select-zone.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MapViewComponent } from './map-view/map-view.component';
 import { EditPlotComponent } from './edit-plot/edit-plot.component';
+import { CameraComponent } from './camera/camera.component';
+import { WebcamModule } from 'ngx-webcam';
+import { UploadImageComponent } from './upload-image/upload-image.component';
 
 
 
@@ -13,12 +16,15 @@ import { EditPlotComponent } from './edit-plot/edit-plot.component';
   declarations: [
     SelectZoneComponent,
     MapViewComponent,
-    EditPlotComponent
+    EditPlotComponent,
+    CameraComponent,
+    UploadImageComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    WebcamModule
   ]
 })
 export class DataCollectionModule { }

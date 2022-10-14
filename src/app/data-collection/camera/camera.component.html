@@ -1,0 +1,24 @@
+<div style="text-align:center">
+    <p>
+        APP CAMERA
+    </p>
+	<div>
+		<webcam [height]="300" [imageQuality]="1" [width]="300" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+		 [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"  (cameraSwitched)="cameraWasSwitched($event)"
+		 (initError)="handleInitError($event)"></webcam>
+
+		<br/>
+		<div mat-flat-button class="actionBtn" (click)="triggerSnapshot();" title="Take Picture">
+			<button mat-raised-button>Take Photo</button> 
+		</div>
+		<br>
+		<div  class="actionBtn" (click)="showNextWebcam(true);" title="Switch Camera">
+			<button mat-raised-button >Change Camera</button>
+		</div>
+	</div>
+</div>
+
+<h4 *ngIf="errors.length > 0">Messages:</h4>
+<ul *ngFor="let error of errors">
+	<li>{{error | json}}</li>
+</ul>

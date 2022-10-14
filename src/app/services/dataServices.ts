@@ -104,4 +104,15 @@ export class DataService {
     }
 
 
+    //images
+    uploadImage(item: any){
+        return this.http
+          .post<any>(`${this.API_URL}/images/add-image`,item,this.httpOptions)
+          .pipe(
+            catchError(this.handleError)
+          );
+      }
+
+
+
 }

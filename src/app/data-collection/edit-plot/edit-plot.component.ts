@@ -76,13 +76,14 @@ export class EditPlotComponent implements OnInit {
     console.log(this.plotDetails, "NEW PLOT")
 
     if(this.detailsAdded){
-      alert("Details added update route")
+      this.dataService.updatePlotDetails(this.plotFeatureId,this.plotDetails).subscribe(res=>{
+        console.log(res)
+      })
     }else{
-      alert("Details not added, post Data")
       this.dataService.postPlotDetails(this.plotDetails).subscribe(res=>{
        if(res.status === "Success"){
-        this.dataService.markPlotShapefileAsCompleted(1).subscribe(resp=>{
-          console.log(resp, "MARKED AS DOne")
+        this.dataService.markPlotShapefileAsCompleted(this.plotFeatureId).subscribe(resp=>{
+          
         })
        }
       })
