@@ -8,7 +8,6 @@ import { MapViewComponent } from './map-view/map-view.component';
 import { EditPlotComponent } from './edit-plot/edit-plot.component';
 import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
-import { UploadImageComponent } from './upload-image/upload-image.component';
 import { EditRoadComponent } from './edit-road/edit-road.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
 
@@ -20,7 +19,6 @@ import { EditBuildingComponent } from './edit-building/edit-building.component';
     MapViewComponent,
     EditPlotComponent,
     CameraComponent,
-    UploadImageComponent,
     EditRoadComponent,
     EditBuildingComponent,
   ],

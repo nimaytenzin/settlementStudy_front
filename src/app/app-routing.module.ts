@@ -1,6 +1,5 @@
 import { EditBuildingComponent } from './data-collection/edit-building/edit-building.component';
 import { EditRoadComponent } from './data-collection/edit-road/edit-road.component';
-import { UploadImageComponent } from './data-collection/upload-image/upload-image.component';
 import { CameraComponent } from './data-collection/camera/camera.component';
 import { EditPlotComponent } from './data-collection/edit-plot/edit-plot.component';
 import { MapViewComponent } from './data-collection/map-view/map-view.component';
@@ -12,7 +11,7 @@ const routes: Routes = [
   {path: '', component: SelectZoneComponent},
   {path: 'map', component: MapViewComponent},
   {path: 'editPlot', component: EditPlotComponent},
-  {path:'camera',component:UploadImageComponent},
+  {path:'camera',component:CameraComponent},
   {path:'editRoad',component:EditRoadComponent},
   {path:'editBuilding',component:EditBuildingComponent}
 ];
