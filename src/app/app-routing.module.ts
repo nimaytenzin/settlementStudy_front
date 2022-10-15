@@ -1,3 +1,4 @@
+import { EditFootpathComponent } from './data-collection/edit-footpath/edit-footpath.component';
 import { EditBuildingComponent } from './data-collection/edit-building/edit-building.component';
 import { EditRoadComponent } from './data-collection/edit-road/edit-road.component';
 import { CameraComponent } from './data-collection/camera/camera.component';
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path: 'editPlot', component: EditPlotComponent},
   {path:'camera',component:CameraComponent},
   {path:'editRoad',component:EditRoadComponent},
-  {path:'editBuilding',component:EditBuildingComponent}
+  {path:'editBuilding',component:EditBuildingComponent},
+  {path:'editFootpath',component:EditFootpathComponent}
 ];
 
 @NgModule({

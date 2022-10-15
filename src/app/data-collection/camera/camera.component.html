@@ -1,11 +1,16 @@
 <div style="text-align:center">
-    <p>
-        APP CAMERA
-    </p>
-	
+    
+	<p class="my-6">
+		Upload for feature Type {{ featureTypeSelected }} , feature ID: {{ fid  }}
+	</p>
+	<input type="file" class="custom-file-input" (change)="handleUpload($event)">
+	<p *ngIf="fileUploaded" class="mt-12">
+		Image Uploaded
+	</p>
 
-
-	<input type="file" (change)="handleUpload($event)">
+	<button class="mt-6 w-full bg-gray-300 text-gray-400 p-2 rounded" (click)="goBack()" >
+		Back
+	</button>
 
 </div>
 

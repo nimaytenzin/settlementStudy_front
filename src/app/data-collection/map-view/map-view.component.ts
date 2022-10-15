@@ -2,8 +2,12 @@ import { Router } from '@angular/router';
 import { DataService } from './../../services/dataServices';
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+import { Location } from '@angular/common';
 
-
+interface ITypes{
+  id:number,
+  name:string
+}
 @Component({
   selector: 'app-map-view',
   templateUrl: './map-view.component.html',
@@ -13,7 +17,7 @@ export class MapViewComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private router: Router
+    private router: Router,
   ) { }
 
   googleSatUrl = "http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}";
@@ -22,10 +26,14 @@ export class MapViewComponent implements OnInit {
   plotMap = {} as L.GeoJSON;
   roadMap = {} as L.GeoJSON;
   buildingMap = {} as L.GeoJSON;
+  footpathMap = {} as L.GeoJSON;
 
   selectedFeature = {}
 
   selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'))
+
+  types =["Plots","Buildings","Roads","Footpaths","Points"]
+  featureTypeSelected = sessionStorage.getItem('featureType');
 
   ngOnInit(): void {
     this.renderMap()
@@ -45,13 +53,12 @@ export class MapViewComponent implements OnInit {
     }).setView([27.4712, 89.64191,], 13);
   }
 
-
-
   fetchGeojson () {
     const featureTypeSelected = sessionStorage.getItem("featureType");
     if(featureTypeSelected === "Plots"){this.fetchPlotsGeojson()};
     if(featureTypeSelected === "Roads"){this.fetchRoadsGeojson()};
     if(featureTypeSelected === "Buildings"){this.fetchBuildingGeojson()};
+    if(featureTypeSelected === "Footpaths"){this.fetchFootpathGeojson()};
   }
 
   resetHighlight(e: any) {
@@ -95,7 +102,8 @@ export class MapViewComponent implements OnInit {
             'dblclick': (e) => {
               console.log("Double Click enter to view details")
               console.log(e)
-              sessionStorage.setItem("plotFid", e.target.feature.properties.gid)
+              sessionStorage.setItem("plotFid", e.target.feature.properties.gid);
+              sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
               this.router.navigate(['editPlot'])
             }
           });
@@ -146,6 +154,44 @@ export class MapViewComponent implements OnInit {
   }
 
 
+  fetchFootpathGeojson(){
+    this.dataService.getFootpathsByPlan(this.selectedSpatialPlanId).subscribe(res => {
+      this.footpathMap = L.geoJSON(res, {
+        style: function (feature) {
+          return {
+            weight: 1,
+            opacity: 1,
+            color: feature?.properties.done === 'true' ? 'green' : 'red',
+            fillOpacity: .5
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            mouseover: (e) => {
+              e.target.setStyle({
+                weight: 2,
+                color: 'yellow',
+              });
+            },
+            mouseout: this.resetHighlight,
+            'click': (e) => {
+              this.map.fitBounds(e.target.getBounds())
+              this.selectedFeature = e.target.feature.properties
+
+            },
+            'dblclick': (e) => {
+              console.log("Double Click enter to view details")
+              console.log(e)
+              sessionStorage.setItem("footpathFid", e.target.feature.properties.gid)
+              this.router.navigate(['editFootpath'])
+            }
+          });
+        }
+      })
+      this.map.addLayer(this.footpathMap)
+      this.map.fitBounds(this.footpathMap.getBounds())
+    })
+  }
   
   fetchBuildingGeojson(){
     this.dataService.getBuildingsByPlan(this.selectedSpatialPlanId).subscribe(res => {
@@ -173,6 +219,13 @@ export class MapViewComponent implements OnInit {
     }) 
   }
 
+
+
+  onFeatureTypeChange(event:any){
+    console.log("FEATURE TYPE CHANGE", event)
+    sessionStorage.setItem("featureType", event.target.value);
+    window.location.reload()
+  }
 
 
 

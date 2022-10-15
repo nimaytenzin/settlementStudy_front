@@ -4,13 +4,16 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-
+interface IImage{
+  uri:string
+}
 
 @Component({
   selector: 'app-edit-plot',
   templateUrl: './edit-plot.component.html',
   styleUrls: ['./edit-plot.component.css']
 })
+
 export class EditPlotComponent implements OnInit {
 
   constructor(
@@ -23,6 +26,7 @@ export class EditPlotComponent implements OnInit {
   BuildingHeights:String[] = BuildingHeights;
   plotUses:String[] = PlotUses;
   selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'));
+  plotFeatureProperty = JSON.parse(sessionStorage.getItem('featureProperties')!);
 
   detailsAdded:boolean = false;
 
@@ -33,6 +37,8 @@ export class EditPlotComponent implements OnInit {
     remarks:new FormControl('')
   });
 
+  images =[] as IImage[]
+
   plotDetails = {
     setback_e:"NA",
     parking:0,
@@ -40,6 +46,7 @@ export class EditPlotComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDataIfExists()
+    this.getImages()
   }
 
   fetchDataIfExists(){
@@ -62,6 +69,13 @@ export class EditPlotComponent implements OnInit {
 
   goBackToMap(){
     this.router.navigate(['map'])
+  }
+
+  getImages(){
+    this.dataService.getImages(sessionStorage.getItem("featureType")!,this.plotFeatureId).subscribe(res=>{
+      this.images = res
+      console.log(this.images)
+    })
   }
 
   saveData(){

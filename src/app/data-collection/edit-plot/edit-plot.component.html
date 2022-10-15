@@ -3,28 +3,27 @@
         class="m-1 shadow-lg p-4 rounded font-normal font-mono text-gray-600 text-xs leading-relaxed tracking-wide ">
        <div class="flex justify-between my-1">
         <p>
-            Plot ID: 123
+            Plot ID: {{ plotFeatureProperty.plot_id  }}
         </p>
         <p>
-            FeatureID: <strong> 123</strong>
+            FeatureID: <strong> {{plotFeatureProperty.gid  }} </strong>
         </p>
        </div>
         <p>
-            Precinct: <strong> Insitutional</strong>
+            Precinct: <strong> {{plotFeatureProperty.precinct  }} </strong>
+        </p>
+        {{plotFeatureProperty  }}
+        <p>
+            Max Height: <strong>{{ plotFeatureProperty.height  }} Floors</strong>
         </p>
         <p>
-            Max Height: <strong>4 Floors</strong>
+            Coverage: <strong>{{plotFeatureProperty.coverage  }} %</strong>
         </p>
         <p>
-            Coverage: <strong>50%</strong>
-        </p>
-        <p>
-            Setbacks: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cum, velit!
+            Setbacks: {{ plotFeatureProperty.setback  }}
         </p>
         <p class="mt-1">
-            Uses: Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse consequatur blanditiis, et eius odio
-            magnam quasi, earum tempora laborum assumenda maxime! Magnam ut hic reprehenderit illo est numquam nam
-            aperiam?
+            Uses: {{ plotFeatureProperty.uses  }}
         </p>
     </div>
 
@@ -32,8 +31,8 @@
         <button class=" bg-green-500 text-white p-2 rounded" (click)="takePhoto()" >
             Take Photographic Evidence
         </button>
-        <div class="flex mt-4 flex-wrap gap-1">
-          show clicked images here 
+        <div class="flex overflow-x-scroll mt-4 gap-4">
+            <img *ngFor="let image of images"  src='http://202.144.157.89:4200/{{image.uri}}'  style="height: 150px;width:auto">
         </div>
     </div>
 

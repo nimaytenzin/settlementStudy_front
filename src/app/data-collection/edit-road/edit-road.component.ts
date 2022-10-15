@@ -6,6 +6,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IRoad } from 'src/app/services/dataServices';
 import { DevelopmentStatuses } from 'src/app/services/staticData';
 
+interface IImage{
+  uri:string
+}
 
 
 @Component({
@@ -44,6 +47,7 @@ export class EditRoadComponent implements OnInit {
     footpathLeft:new FormControl(''),
     footpathRight:new FormControl('')
   });
+  images=[] as IImage[]
 
 
   developmentstatuses:String[] = DevelopmentStatuses;
@@ -51,6 +55,7 @@ export class EditRoadComponent implements OnInit {
   
   ngOnInit(): void {
     this.fetchDataIfExists();
+    this.getImages();
   }
 
   fetchDataIfExists(){
@@ -93,6 +98,7 @@ export class EditRoadComponent implements OnInit {
     this.roadDetails.drains_right = Number(this.editRoadForm.get('drainsRight')?.value!);
     this.roadDetails.path_left = Number(this.editRoadForm.get('footpathLeft')?.value!);
     this.roadDetails.path_right = Number(this.editRoadForm.get('footpathRight')?.value!);
+    
     if(this.detailsAdded){
       this.dataService.updateRoadSegmentDetails(this.roadDetails,this.roadFeatureId).subscribe(res=>{
         console.log(res)
@@ -102,9 +108,18 @@ export class EditRoadComponent implements OnInit {
         console.log(res,"ADDMING DATA")
         this.dataService.markRoadShapefileAsCompleted(this.roadFeatureId).subscribe(resp=>{
           console.log(resp)
+          window.location.reload()
         }) 
       })
     }
+  }
+
+
+  getImages(){
+    this.dataService.getImages(sessionStorage.getItem("featureType")!,this.roadFeatureId).subscribe(res=>{
+      this.images = res
+      console.log(this.images)
+    })
   }
 
   
@@ -112,4 +127,7 @@ export class EditRoadComponent implements OnInit {
     this.router.navigate(['map'])
   }
 
+  takePhoto(){
+    this.router.navigate(['camera'])
+  }
 }

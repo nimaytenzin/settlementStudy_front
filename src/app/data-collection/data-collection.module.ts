@@ -10,6 +10,7 @@ import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
 import { EditRoadComponent } from './edit-road/edit-road.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
+import { EditFootpathComponent } from './edit-footpath/edit-footpath.component';
 
 
 
@@ -21,6 +22,7 @@ import { EditBuildingComponent } from './edit-building/edit-building.component';
     CameraComponent,
     EditRoadComponent,
     EditBuildingComponent,
+    EditFootpathComponent,
   ],
   imports: [
     CommonModule,
