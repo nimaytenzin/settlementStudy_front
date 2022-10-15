@@ -17,19 +17,16 @@ export class UploadImageComponent implements OnInit {
   
   ngOnInit(): void {
   }
-
-
   uploadImg(){
     if(this.webcamImage){
       let jsonObject = {
-        "fid":1,
+        "fid":2,
         "ftype":"Plot",
         "uri":this.webcamImage.imageAsDataUrl
       }
       console.log(jsonObject)
       this.dataService.uploadImage(jsonObject).subscribe(response=>{
         console.log(response)
-   
     })
   }
 }

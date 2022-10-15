@@ -10,3 +10,7 @@ export const PlotUses:String[]=[
 export const DevelopmentStatuses:String[]=[
     "Developed","Undeveloped","Under Development","UnderDeveloped"
 ]
+
+export const TrafficFlowDirection:String[]=[
+    "One Way","Two Way"
+]

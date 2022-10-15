@@ -67,7 +67,7 @@ export class EditPlotComponent implements OnInit {
 
   saveData(){
     this.plotDetails.fid = this.plotFeatureId;
-    this.plotDetails.lap_id = Number(sessionStorage.getItem('lap_id'));
+    this.plotDetails.lap_id = Number(sessionStorage.getItem('selectedSpatialPlanId'));
     this.plotDetails.d_status = this.editPlotForm.get('developmentStatus')?.value! ;
     this.plotDetails.max_height = this.editPlotForm.get('maxHeight')?.value!;
     this.plotDetails.plot_use = this.editPlotForm.get("plotUse")?.value!;

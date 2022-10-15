@@ -14,6 +14,25 @@ export interface IPlot{
     remarks:string;
   }
 
+export interface IRoad{
+    fid: number;
+    lap_id:number;
+    d_status:string;
+    t_flow: string;
+    row:number;
+    lanes:number;
+    carriage_width:number;
+    median:number;
+    parking_left:number;
+    parking_right:number;
+    path_left:number;
+    path_right:number;
+    light_left:number;
+    light_right:number;
+    drains_left:number;
+    drains_right:number;
+    remarks:string;
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -114,5 +133,30 @@ export class DataService {
       }
 
 
+      //roads
+      getRoadsByPlan(planId:number){
+        return this.http
+        .get<any>(`${this.API_URL}/shapefile/get-roads/${planId}`, this.httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        )
+      }
+
+      //buildings
+      getBuildingsByPlan(planId:number){
+        return this.http
+        .get<any>(`${this.API_URL}/shapefile/get-buildings/${planId}`, this.httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        )
+      }
+
+      getZhicharBuildingDetails(structureId:number){
+        return this.http
+        .get<any>(`https://zhichar.ddnsfree.com/hpi/building/get/${structureId}`, this.httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        )
+      }
 
 }
