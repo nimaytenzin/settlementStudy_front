@@ -141,6 +141,38 @@ export class DataService {
           catchError(this.handleError)
         )
       }
+      getRoadSegmentDetails(roadFeatureId:number){
+        return this.http
+        .get<any>(`${this.API_URL}/roads/get-road/${roadFeatureId}`, this.httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        )
+      }
+
+      postRoadSegmentDetails(roadDetails:any){
+        return this.http
+        .post<any>(`${this.API_URL}/roads/add-road`, roadDetails, this.httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        );
+      }
+      updateRoadSegmentDetails(roadDetails:any, roadFeatureId:number){
+        return this.http
+        .put<any>(`${this.API_URL}/roads/update-road/${roadFeatureId}`, roadDetails, this.httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        );
+      }
+
+
+      markRoadShapefileAsCompleted(featureId:number){
+    return this.http
+    .put<any>(`${this.API_URL}/roads/set-done/${featureId}`,  this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
 
       //buildings
       getBuildingsByPlan(planId:number){

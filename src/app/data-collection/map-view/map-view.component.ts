@@ -30,7 +30,6 @@ export class MapViewComponent implements OnInit {
   ngOnInit(): void {
     this.renderMap()
     this.fetchGeojson()
-    console.log("SELECTED SPATIAL PLAN", this.selectedSpatialPlanId)
   }
 
 
@@ -72,7 +71,7 @@ export class MapViewComponent implements OnInit {
       this.plotMap = L.geoJSON(res, {
         style: function (feature) {
           return {
-            fillColor: feature?.properties.done === 'true' ? 'red' : 'green',
+            fillColor: feature?.properties.done === 'true' ? 'green' : 'red',
             weight: 0.5,
             opacity: 1,
             color: "black",
@@ -112,10 +111,9 @@ export class MapViewComponent implements OnInit {
       this.plotMap = L.geoJSON(res, {
         style: function (feature) {
           return {
-            fillColor: feature?.properties.done === 'true' ? 'red' : 'green',
-            weight: 0.5,
+            weight: 1,
             opacity: 1,
-            color: "black",
+            color: feature?.properties.done === 'true' ? 'green' : 'red',
             fillOpacity: .5
           };
         },

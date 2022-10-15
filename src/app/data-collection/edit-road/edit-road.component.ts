@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { DataService } from './../../services/dataServices';
 import { TrafficFlowDirection } from './../../services/staticData';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -13,39 +15,22 @@ import { DevelopmentStatuses } from 'src/app/services/staticData';
 })
 export class EditRoadComponent implements OnInit {
 
-  constructor() { }
-  fid = sessionStorage.getItem("roadFid")
+  constructor(
+    private dataService:DataService,
+    private router:Router
+  ) { }
+  roadFeatureId = Number(sessionStorage.getItem("roadFid"));
+  selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'));
+  detailsAdded:boolean = false;
+
   roadDetails = {
     row:0,
     median:0,
     parking_left:0,
     parking_right:0,
-    path_left:0,
-    path_right:0,
     light_left:0,
-    light_right:0,
-    drains_left:0,
-    drains_right:0
+    light_right:0
   } as IRoad;
-
-
-  // fid: number;
-// lap_id:number;
-// d_status:string;
-// t_flow: string;
-// row:number;
-// lanes:number;
-// carriage_width:number;
-// median:number;
-// parking_left:number;
-// parking_right:number;
-// path_left:number;
-// path_right:number;
-// light_left:number;
-// light_right:number;
-// drains_left:number;
-// drains_right:number;
-// remarks:string;
 
 
   editRoadForm = new FormGroup({
@@ -53,34 +38,78 @@ export class EditRoadComponent implements OnInit {
     trafficFlow:new FormControl(''),
     lanes:new FormControl(''),
     carriageWidth: new FormControl(''),
-    remarks:new FormControl('')
+    remarks:new FormControl(''),
+    drainsLeft:new FormControl(''),
+    drainsRight: new FormControl(''),
+    footpathLeft:new FormControl(''),
+    footpathRight:new FormControl('')
   });
+
 
   developmentstatuses:String[] = DevelopmentStatuses;
   trafficFlow:String[] = TrafficFlowDirection;
   
   ngOnInit(): void {
-
+    this.fetchDataIfExists();
   }
 
-
-
-
+  fetchDataIfExists(){
+    this.dataService.getRoadSegmentDetails(this.roadFeatureId).subscribe(res=>{
+      console.log("DATA FROM SERVER", res)
+      if(res){
+        this.detailsAdded = true;
+        this.editRoadForm.patchValue({
+          developmentStatus: res.d_status,
+          trafficFlow:res.t_flow,
+          lanes:res.lanes,
+          carriageWidth:res.carriage_width,
+          drainsLeft:res.drains_left,
+          drainsRight:res.drains_right,
+          footpathLeft:res.path_left,
+          footpathRight:res.path_right,
+          remarks: res.remarks
+        })
+      }else{
+        this.detailsAdded = false;
+      }
+    })
+  }
+  
   saveData(){
-    this.roadDetails.fid = 1;
-    this.roadDetails.lap_id = Number(sessionStorage.getItem('selectedSpatialPlanId'));
+    this.roadDetails.fid = this.roadFeatureId;
+    this.roadDetails.lap_id = this.selectedSpatialPlanId;
+    this.roadDetails.row = 0;
+    this.roadDetails.light_left = 0;
+    this.roadDetails.light_right = 0;
+    this.roadDetails.parking_left = 0;
+    this.roadDetails.parking_right = 0;
+
     this.roadDetails.d_status = this.editRoadForm.get('developmentStatus')?.value!;
     this.roadDetails.t_flow = this.editRoadForm.get('trafficFlow')?.value!;
     this.roadDetails.lanes = Number(this.editRoadForm.get('lanes')?.value!);
     this.roadDetails.carriage_width = Number(this.editRoadForm.get('carriageWidth')?.value!);
     this.roadDetails.remarks = this.editRoadForm.get('remarks')?.value!;
-
-  
-    
+    this.roadDetails.drains_left = Number(this.editRoadForm.get('drainsLeft')?.value!);
+    this.roadDetails.drains_right = Number(this.editRoadForm.get('drainsRight')?.value!);
+    this.roadDetails.path_left = Number(this.editRoadForm.get('footpathLeft')?.value!);
+    this.roadDetails.path_right = Number(this.editRoadForm.get('footpathRight')?.value!);
+    if(this.detailsAdded){
+      this.dataService.updateRoadSegmentDetails(this.roadDetails,this.roadFeatureId).subscribe(res=>{
+        console.log(res)
+      })
+    }else{
+      this.dataService.postRoadSegmentDetails(this.roadDetails).subscribe(res=>{
+        console.log(res,"ADDMING DATA")
+        this.dataService.markRoadShapefileAsCompleted(this.roadFeatureId).subscribe(resp=>{
+          console.log(resp)
+        }) 
+      })
+    }
   }
 
+  
   goBackToMap(){
-
+    this.router.navigate(['map'])
   }
 
 }

@@ -22,6 +22,7 @@ export class EditPlotComponent implements OnInit {
   developmentstatuses:String[] = DevelopmentStatuses;
   BuildingHeights:String[] = BuildingHeights;
   plotUses:String[] = PlotUses;
+  selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'));
 
   detailsAdded:boolean = false;
 
@@ -44,8 +45,6 @@ export class EditPlotComponent implements OnInit {
   fetchDataIfExists(){
     this.dataService.getPlotDetails(this.plotFeatureId).subscribe(res=>{
       if(res.data){
-        console.log("PATCH THE FORM VALUES")
-        console.log(res)
         this.detailsAdded = true;
 
         this.editPlotForm.patchValue({
@@ -67,7 +66,7 @@ export class EditPlotComponent implements OnInit {
 
   saveData(){
     this.plotDetails.fid = this.plotFeatureId;
-    this.plotDetails.lap_id = Number(sessionStorage.getItem('selectedSpatialPlanId'));
+    this.plotDetails.lap_id = this.selectedSpatialPlanId;
     this.plotDetails.d_status = this.editPlotForm.get('developmentStatus')?.value! ;
     this.plotDetails.max_height = this.editPlotForm.get('maxHeight')?.value!;
     this.plotDetails.plot_use = this.editPlotForm.get("plotUse")?.value!;
@@ -88,6 +87,9 @@ export class EditPlotComponent implements OnInit {
        }
       })
     }
+  }
+  takePhoto(){
+    this.router.navigate(['camera'])
   }
 
 }
