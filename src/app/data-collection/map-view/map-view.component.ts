@@ -31,7 +31,7 @@ export class MapViewComponent implements OnInit {
   latitude!: number;
   longitude!: number;
   accuracy!:number;
-  
+
   selectedFeature = {}
 
   selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'))
@@ -51,7 +51,7 @@ export class MapViewComponent implements OnInit {
 
     this.map = L.map('map', {
       zoomControl: false,
-      layers: [cartoMap],
+      layers: [satelliteMap],
       attributionControl: false,
       renderer: L.canvas({ tolerance: 3 })
     }).setView([27.4712, 89.64191,], 13);
