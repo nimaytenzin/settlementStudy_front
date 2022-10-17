@@ -28,6 +28,10 @@ export class MapViewComponent implements OnInit {
   buildingMap = {} as L.GeoJSON;
   footpathMap = {} as L.GeoJSON;
 
+  latitude!: number;
+  longitude!: number;
+  accuracy!:number;
+  
   selectedFeature = {}
 
   selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'))
@@ -229,6 +233,49 @@ export class MapViewComponent implements OnInit {
 
 
 
+  getLocation(): void {
+    if (navigator.geolocation) {
+        const iconRetinaUrl = 'assets/mymarker.png';
+        const iconUrl = 'assets/mymarker.png';
+        const iconDefault = L.icon({
+          iconRetinaUrl,
+          iconUrl,
+          iconSize: [20, 20],
+          popupAnchor: [1, -34],
+          tooltipAnchor: [16, -28],
+          shadowSize: [41, 41]
+        });
+
+        const options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.longitude = position.coords.longitude;
+          this.latitude = position.coords.latitude;
+          this.accuracy = position.coords.accuracy;
+
+          if (this.accuracy > 100) {
+            L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
+                      
+            this.map.flyTo([this.latitude, this.longitude], 19);
+          } else {
+            L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
+            .openPopup();
+            L.circle([this.latitude, this.longitude], {
+              color: '#3498db',
+              fillColor: '#3498db',
+              fillOpacity: 0.3,
+              radius: this.accuracy
+            }).addTo(this.map);
+            this.map.flyTo([this.latitude, this.longitude], 19);
+          }
+        }, err => {
+        }, options);
+      }
+    }
 
 
 
