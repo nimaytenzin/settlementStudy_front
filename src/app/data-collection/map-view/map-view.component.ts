@@ -75,6 +75,16 @@ export class MapViewComponent implements OnInit {
     });
   }
 
+  resetRoadHighLight(e:any){
+    console.log("RESET REOAD HIGHLIGHT",e)
+    var layer = e.target;
+    layer.setStyle({
+      weight: 1,
+      opacity: 1,
+      color: layer.feature.properties.done === 'true' ? 'green' : 'red',
+      fillOpacity: .5
+    }); 
+  }
    
 
   fetchPlotsGeojson(){
@@ -137,7 +147,7 @@ export class MapViewComponent implements OnInit {
                 color: 'yellow',
               });
             },
-            mouseout: this.resetHighlight,
+            mouseout: this.resetRoadHighLight,
             'click': (e) => {
               this.map.fitBounds(e.target.getBounds())
               this.selectedFeature = e.target.feature.properties
