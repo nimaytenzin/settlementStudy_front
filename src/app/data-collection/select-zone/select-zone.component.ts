@@ -43,14 +43,13 @@ export class SelectZoneComponent implements OnInit {
   selectedSpatialPlan = {} as ISpatialPlan
 
   types:ITypes[]=[
-    {id: 1, name: "Plots" },
+    {id: 1, name: "Residential Plots" },
     {id: 2, name: "Buildings" },
     {id: 3, name: "Roads" },
     {id: 4, name: "Footpaths" },
-    {id: 4, name: "Points" }
-
+    {id: 4, name: "Proposals" },
+    {id:5,name:"Wetlands"}
   ]
-
   //forms
   planSelectForm = new FormGroup({
     selectedThromde:new FormControl(''),
@@ -71,7 +70,6 @@ export class SelectZoneComponent implements OnInit {
     this.dataService.getSpatialPlansByThromde(Number(this.planSelectForm.get('selectedThromde')?.value)).subscribe(res => {
       this.spatialPlans =res
       console.log(res)
-      
     })
   }
   goToMapView(){

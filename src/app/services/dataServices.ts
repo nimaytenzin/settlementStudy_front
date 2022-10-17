@@ -14,6 +14,11 @@ export interface IPlot {
     remarks: string;
 }
 
+export interface IProposal{
+    fid:number;
+    remarks:string;
+}
+
 export interface IRoad {
     fid: number;
     lap_id: number;
@@ -249,5 +254,40 @@ export class DataService {
           catchError(this.handleError)
         );
       }
+
+      //Proposals
+        getProposalsBySpatialPlan(spatialPlanId:number){
+            return this.http
+            .get<any>(`${this.API_URL}/shapefile/get-proposals/${spatialPlanId}`)
+            .pipe(
+            catchError(this.handleError)
+            )
+        }
+
+        markProposalShapefileAsCompleted(featureId: number) {
+            return this.http
+                .put<any>(`${this.API_URL}/proposals/set-done/${featureId}`, this.httpOptions)
+                .pipe(
+                    catchError(this.handleError)
+                );
+        }
+        //unimplemented
+        updateProposalRemarks( proposalDetails: IProposal) {
+            return this.http
+                .put<any>(`${this.API_URL}/proposals/updateRemarks`, proposalDetails, this.httpOptions)
+                .pipe(
+                    catchError(this.handleError)
+                )
+        }
+
+        //unimplemented
+        getProposalDetails(proposalFeatureId: number) {
+            return this.http
+                .get<any>(`${this.API_URL}/proposals/getDetails/${proposalFeatureId}`, this.httpOptions)
+                .pipe(
+                    catchError(this.handleError)
+                )
+        }
+
 
 }

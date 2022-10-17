@@ -11,6 +11,8 @@ import { WebcamModule } from 'ngx-webcam';
 import { EditRoadComponent } from './edit-road/edit-road.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
 import { EditFootpathComponent } from './edit-footpath/edit-footpath.component';
+import { EditProposalComponent } from './edit-proposal/edit-proposal.component';
+import { EditWetlandComponent } from './edit-wetland/edit-wetland.component';
 
 
 
@@ -23,6 +25,8 @@ import { EditFootpathComponent } from './edit-footpath/edit-footpath.component';
     EditRoadComponent,
     EditBuildingComponent,
     EditFootpathComponent,
+    EditProposalComponent,
+    EditWetlandComponent,
   ],
   imports: [
     CommonModule,

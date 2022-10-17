@@ -27,6 +27,8 @@ export class MapViewComponent implements OnInit {
   roadMap = {} as L.GeoJSON;
   buildingMap = {} as L.GeoJSON;
   footpathMap = {} as L.GeoJSON;
+  proposalMap = {} as L.GeoJSON;
+  wetlandMap = {} as L.GeoJSON;
 
   latitude!: number;
   longitude!: number;
@@ -36,7 +38,7 @@ export class MapViewComponent implements OnInit {
 
   selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'))
 
-  types =["Plots","Buildings","Roads","Footpaths","Points"]
+  types =["Residential Plots","Wetlands","Roads","Footpaths","Proposals",""]
   featureTypeSelected = sessionStorage.getItem('featureType');
 
   ngOnInit(): void {
@@ -63,6 +65,8 @@ export class MapViewComponent implements OnInit {
     if(featureTypeSelected === "Roads"){this.fetchRoadsGeojson()};
     if(featureTypeSelected === "Buildings"){this.fetchBuildingGeojson()};
     if(featureTypeSelected === "Footpaths"){this.fetchFootpathGeojson()};
+    if(featureTypeSelected === "Proposals"){this.fetchProposalsGeojson()};
+    if(featureTypeSelected === "Wetlands"){this.fetchWetlandGeojson()};
   }
 
   resetHighlight(e: any) {
@@ -76,7 +80,6 @@ export class MapViewComponent implements OnInit {
   }
 
   resetRoadHighLight(e:any){
-    console.log("RESET REOAD HIGHLIGHT",e)
     var layer = e.target;
     layer.setStyle({
       weight: 1,
@@ -157,6 +160,7 @@ export class MapViewComponent implements OnInit {
               console.log("Double Click enter to view details")
               console.log(e)
               sessionStorage.setItem("roadFid", e.target.feature.properties.gid)
+              sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
               this.router.navigate(['editRoad'])
             }
           });
@@ -197,6 +201,7 @@ export class MapViewComponent implements OnInit {
               console.log("Double Click enter to view details")
               console.log(e)
               sessionStorage.setItem("footpathFid", e.target.feature.properties.gid)
+              sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
               this.router.navigate(['editFootpath'])
             }
           });
@@ -223,6 +228,7 @@ export class MapViewComponent implements OnInit {
       onEachFeature:  (feature, layer) => {
         layer.on('click',(e) => {
          sessionStorage.setItem('buildingFid', feature.properties.structure_)
+         sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
          this.router.navigate(['editBuilding'])
         });
       }, 
@@ -233,6 +239,75 @@ export class MapViewComponent implements OnInit {
     }) 
   }
 
+  fetchProposalsGeojson(){
+    this.dataService.getProposalsBySpatialPlan(this.selectedSpatialPlanId).subscribe(res => {
+      console.log(res)
+      this.proposalMap = L.geoJSON(res, {
+
+        pointToLayer: function (feature, latlng) {
+          console.log(feature,latlng)
+          return L.circleMarker(latlng, {
+            radius : 6,
+            fillColor :feature.properties.done ==='true'?'red':'green',
+            color : feature.properties.done ==='true'?'red':'green',
+            weight : 2,
+            opacity : 1,
+            fillOpacity : 1
+        });
+      },
+      onEachFeature:  (feature, layer) => {
+        layer.on({
+          mouseover: (e) => {
+            e.target.setStyle({
+              weight: 2,
+              color: 'yellow',
+            });
+          },
+          mouseout: this.resetHighlight,
+          'click': (e) => {
+            // this.map.fitBounds(e.target.getBounds())
+            this.selectedFeature = e.target.feature.properties
+          },
+          'dblclick': (e) => {
+            sessionStorage.setItem("proposalFid", e.target.feature.properties.gid);
+            sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties));
+            this.router.navigate(['editProposal'])
+          }
+        });
+      }, 
+      })
+
+      this.map.addLayer(this.proposalMap)
+      this.map.fitBounds(this.proposalMap.getBounds())
+    }) 
+  }
+
+  fetchWetlandGeojson(){
+    console.log("Wetlands loading")
+    this.dataService.getPlotsByPlan(this.selectedSpatialPlanId).subscribe(res => {
+      this.wetlandMap = L.geoJSON(res, {
+        pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, {
+            radius : 4,
+            fillColor :feature.properties.done ==='true'?'red':'green',
+            color : feature.properties.done ==='true'?'red':'green',
+            weight : 1,
+            opacity : 1,
+            fillOpacity : 1
+        });
+      },
+      onEachFeature:  (feature, layer) => {
+        layer.on('click',(e) => {
+         sessionStorage.setItem('wetlandFid', feature.properties.structure_)
+         this.router.navigate(['editWetland'])
+        });
+      }, 
+      })
+
+      this.map.addLayer(this.buildingMap)
+      this.map.fitBounds(this.buildingMap.getBounds())
+    }) 
+  }
 
 
   onFeatureTypeChange(event:any){
@@ -240,8 +315,6 @@ export class MapViewComponent implements OnInit {
     sessionStorage.setItem("featureType", event.target.value);
     window.location.reload()
   }
-
-
 
   getLocation(): void {
     if (navigator.geolocation) {
@@ -286,9 +359,5 @@ export class MapViewComponent implements OnInit {
         }, options);
       }
     }
-
-
-
-
 }
 
