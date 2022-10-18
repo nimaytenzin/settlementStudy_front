@@ -3,6 +3,8 @@
     <div id="map" class="z-10">
     </div>
     <div class="absolute z-20 top-0 left-0 bg-white text-xs p-4 bg-opacity-60 rounded">
+
+        <button (click)="getLocation()">Get Location</button>
         <div *ngFor="let item of selectedFeature | keyvalue">
             {{item.key}} - {{item.value}}
         </div>
