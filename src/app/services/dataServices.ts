@@ -255,7 +255,40 @@ export class DataService {
         );
       }
 
-      //Proposals
+      //wetland
+        getWetlandsBySpatialPlan(spatialPlanId:number){
+            return this.http
+            .get<any>(`${this.API_URL}/shapefile/get-wetlands/${spatialPlanId}`)
+            .pipe(
+            catchError(this.handleError)
+            )
+        }
+
+        markWetlandAsCompleted(featureId: number) {
+            return this.http
+                .put<any>(`${this.API_URL}/wetlands/set-done/${featureId}`, this.httpOptions)
+                .pipe(
+                    catchError(this.handleError)
+                );
+        }
+        updateWetlandRemakrs( proposalDetails: IProposal) {
+            return this.http
+                .put<any>(`${this.API_URL}/wetlands/updateRemarks`, proposalDetails, this.httpOptions)
+                .pipe(
+                    catchError(this.handleError)
+                )
+        }
+
+        getWetlandDetails(proposalFeatureId: number) {
+            return this.http
+                .get<any>(`${this.API_URL}/wetlands/getDetails/${proposalFeatureId}`, this.httpOptions)
+                .pipe(
+                    catchError(this.handleError)
+                )
+        }
+
+
+        //proposals
         getProposalsBySpatialPlan(spatialPlanId:number){
             return this.http
             .get<any>(`${this.API_URL}/shapefile/get-proposals/${spatialPlanId}`)

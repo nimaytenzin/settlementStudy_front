@@ -43,7 +43,7 @@ export class SelectZoneComponent implements OnInit {
   selectedSpatialPlan = {} as ISpatialPlan
 
   types:ITypes[]=[
-    {id: 1, name: "Residential Plots" },
+    {id: 1, name: "Plots" },
     {id: 2, name: "Buildings" },
     {id: 3, name: "Roads" },
     {id: 4, name: "Footpaths" },

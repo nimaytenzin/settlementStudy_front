@@ -28,6 +28,8 @@ export class CameraComponent implements OnInit {
       this.fid = Number(sessionStorage.getItem('footpathFid'))
     }else if(this.featureTypeSelected === 'Proposals'){
       this.fid = Number(sessionStorage.getItem('proposalFid'))
+    }else if(this.featureTypeSelected === 'Wetlands'){
+      this.fid = Number(sessionStorage.getItem("wetlandFid"))
     }
   }
 

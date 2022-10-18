@@ -284,28 +284,44 @@ export class MapViewComponent implements OnInit {
 
   fetchWetlandGeojson(){
     console.log("Wetlands loading")
-    this.dataService.getPlotsByPlan(this.selectedSpatialPlanId).subscribe(res => {
+    this.dataService.getWetlandsBySpatialPlan(this.selectedSpatialPlanId).subscribe(res => {
       this.wetlandMap = L.geoJSON(res, {
-        pointToLayer: function (feature, latlng) {
-          return L.circleMarker(latlng, {
-            radius : 4,
-            fillColor :feature.properties.done ==='true'?'red':'green',
-            color : feature.properties.done ==='true'?'red':'green',
-            weight : 1,
-            opacity : 1,
-            fillOpacity : 1
-        });
-      },
-      onEachFeature:  (feature, layer) => {
-        layer.on('click',(e) => {
-         sessionStorage.setItem('wetlandFid', feature.properties.structure_)
-         this.router.navigate(['editWetland'])
-        });
-      }, 
+        style: function (feature) {
+          return {
+            fillColor: feature?.properties.done === 'true' ? 'green' : 'red',
+            weight: 0.5,
+            opacity: 1,
+            color: "black",
+            fillOpacity: .5
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          layer.on({
+            mouseover: (e) => {
+              e.target.setStyle({
+                weight: 2,
+                color: 'yellow',
+              });
+            },
+            mouseout: this.resetHighlight,
+            'click': (e) => {
+              this.map.fitBounds(e.target.getBounds())
+              this.selectedFeature = e.target.feature.properties
+
+            },
+            'dblclick': (e) => {
+              console.log("Double Click enter to view details")
+              console.log(e)
+              sessionStorage.setItem("wetlandFid", e.target.feature.properties.gid);
+              sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
+              this.router.navigate(['editWetland'])
+            }
+          });
+        } 
       })
 
-      this.map.addLayer(this.buildingMap)
-      this.map.fitBounds(this.buildingMap.getBounds())
+      this.map.addLayer(this.wetlandMap)
+      this.map.fitBounds(this.wetlandMap.getBounds())
     }) 
   }
 
