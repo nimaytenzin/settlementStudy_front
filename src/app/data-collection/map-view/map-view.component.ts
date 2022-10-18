@@ -38,7 +38,7 @@ export class MapViewComponent implements OnInit {
 
   selectedSpatialPlanId = Number(sessionStorage.getItem('selectedSpatialPlanId'))
 
-  types =["Residential Plots","Wetlands","Roads","Footpaths","Proposals",""]
+  types =["Plots","Wetlands","Roads","Footpaths","Proposals"]
   featureTypeSelected = sessionStorage.getItem('featureType');
 
   ngOnInit(): void {
