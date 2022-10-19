@@ -356,7 +356,7 @@ export class MapViewComponent implements OnInit {
 
   goToEdit(){
     if(this.featureTypeSelected === "Plots"){
-      this.router.navigate(['editPlots'])
+      this.router.navigate(['editPlot'])
     };
 
     if(this.featureTypeSelected === "Roads"){
