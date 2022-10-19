@@ -114,14 +114,9 @@ export class MapViewComponent implements OnInit {
             'click': (e) => {
               this.map.fitBounds(e.target.getBounds())
               this.selectedFeature = e.target.feature.properties
-
-            },
-            'dblclick': (e) => {
-              console.log("Double Click enter to view details")
-              console.log(e)
               sessionStorage.setItem("plotFid", e.target.feature.properties.gid);
               sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
-              this.router.navigate(['editPlot'])
+
             }
           });
         }
@@ -153,16 +148,11 @@ export class MapViewComponent implements OnInit {
             mouseout: this.resetRoadHighLight,
             'click': (e) => {
               this.map.fitBounds(e.target.getBounds())
-              this.selectedFeature = e.target.feature.properties
-
-            },
-            'dblclick': (e) => {
-              console.log("Double Click enter to view details")
-              console.log(e)
+              this.selectedFeature = e.target.feature.properties;
               sessionStorage.setItem("roadFid", e.target.feature.properties.gid)
               sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
-              this.router.navigate(['editRoad'])
-            }
+
+            },
           });
         }
       })
@@ -195,14 +185,9 @@ export class MapViewComponent implements OnInit {
             'click': (e) => {
               this.map.fitBounds(e.target.getBounds())
               this.selectedFeature = e.target.feature.properties
-
-            },
-            'dblclick': (e) => {
-              console.log("Double Click enter to view details")
-              console.log(e)
               sessionStorage.setItem("footpathFid", e.target.feature.properties.gid)
               sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
-              this.router.navigate(['editFootpath'])
+
             }
           });
         }
@@ -267,12 +252,9 @@ export class MapViewComponent implements OnInit {
           'click': (e) => {
             // this.map.fitBounds(e.target.getBounds())
             this.selectedFeature = e.target.feature.properties
-          },
-          'dblclick': (e) => {
             sessionStorage.setItem("proposalFid", e.target.feature.properties.gid);
             sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties));
-            this.router.navigate(['editProposal'])
-          }
+          },
         });
       }, 
       })
@@ -307,14 +289,9 @@ export class MapViewComponent implements OnInit {
             'click': (e) => {
               this.map.fitBounds(e.target.getBounds())
               this.selectedFeature = e.target.feature.properties
-
-            },
-            'dblclick': (e) => {
-              console.log("Double Click enter to view details")
-              console.log(e)
               sessionStorage.setItem("wetlandFid", e.target.feature.properties.gid);
               sessionStorage.setItem("featureProperties",JSON.stringify(e.target.feature.properties))
-              this.router.navigate(['editWetland'])
+
             }
           });
         } 
@@ -376,5 +353,27 @@ export class MapViewComponent implements OnInit {
         }, options);
       }
     }
+
+  goToEdit(){
+    if(this.featureTypeSelected === "Plots"){
+      this.router.navigate(['editPlots'])
+    };
+
+    if(this.featureTypeSelected === "Roads"){
+      this.router.navigate(['editRoad'])
+    };
+    if(this.featureTypeSelected === "Buildings"){
+      
+    };
+    if(this.featureTypeSelected === "Footpaths"){
+      this.router.navigate(['editFootpath'])
+    };
+    if(this.featureTypeSelected === "Proposals"){
+      this.router.navigate(['editProposal'])
+    };
+    if(this.featureTypeSelected === "Wetlands"){
+      this.router.navigate(['editWetland'])
+    };
+  }
 }
 

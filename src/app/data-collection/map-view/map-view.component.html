@@ -4,10 +4,13 @@
     </div>
     <div class="absolute z-20 top-0 left-0 bg-white text-xs p-4 bg-opacity-60 rounded">
 
-        <button (click)="getLocation()">Get Location</button>
         <div *ngFor="let item of selectedFeature | keyvalue">
             {{item.key}} - {{item.value}}
         </div>
+
+        <button (click)="goToEdit()" class="px-2 py-1 mt-4 rounded-md bg-green-500 text-gray-100 w-full">
+            Edit Feature
+        </button>
     </div>
 
     <div class="flex  flex-1 items-center justify-between" style="background-color: #EEF3ED;">
