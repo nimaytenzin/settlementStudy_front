@@ -34,14 +34,6 @@ export class EditPlotComponent implements OnInit {
     sessionStorage.getItem('featureProperties')!
   );
 
-  motivationalMessages: Content[] = [
-    'You are the Best',
-    'GoodJob 👏',
-    'Dra dra Anay Bay bay go ! la zay mi di',
-    'Keep going ! ',
-    'CDRD loves you ❤️ ',
-  ];
-
   detailsAdded: boolean = false;
 
   editPlotForm = new FormGroup({
@@ -106,19 +98,27 @@ export class EditPlotComponent implements OnInit {
           this.toastService.success('Plot Details Updated', { duration: 800 });
         });
     } else {
-      this.dataService.postPlotDetails(this.plotDetails).subscribe((res) => {
-        if (res) {
-          this.toastService.success('Plot Details Added', { duration: 800 });
-          this.throwMotivationalMessage();
-          this.detailsAdded = true;
-          this.dataService
-            .markPlotAsDone(this.plotFeatureId, {})
-            .subscribe((resp) => {
-              if (resp) {
-              }
-            });
-        }
-      });
+      this.dataService
+        .postPlotDetails(this.plotDetails)
+        .pipe(
+          this.toastService.observe({
+            loading: 'Saving',
+            success: 'Saved',
+            error: 'Opps Error chi',
+          })
+        )
+        .subscribe((res) => {
+          if (res) {
+            this.detailsAdded = true;
+            this.dataService
+              .markPlotAsDone(this.plotFeatureId, {})
+              .subscribe((resp) => {
+                if (resp) {
+                  this.throwMotivationalMessage();
+                }
+              });
+          }
+        });
     }
   }
   takePhoto() {
@@ -126,8 +126,15 @@ export class EditPlotComponent implements OnInit {
   }
 
   throwMotivationalMessage() {
+    const motivationalMessages: Content[] = [
+      'You are the Best',
+      'GoodJob 👏',
+      'Dra dra Anay Bay bay go ! la zay mi di',
+      'Keep going ! ',
+      'CDRD loves you ❤️ ',
+    ];
     var rand =
-      this.motivationalMessages[
+      motivationalMessages[
         (Math.random() * this.motivationalMessages.length) | 0
       ];
     this.toastService.show(rand, { duration: 5000 });

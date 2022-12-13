@@ -22,6 +22,7 @@ import { DataService } from './../../services/dataServices';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
+import { Content } from '@ngneat/overview';
 
 interface IImage {
   uri: string;
@@ -213,20 +214,40 @@ export class EditBuildingComponent implements OnInit {
           }
         });
     } else {
-      this.dataService.CreateBuilding(this.buildingDetails).subscribe((res) => {
-        if (res) {
-          this.toastService.success('Added Building Details');
-          this.detailsAdded = true;
-
-          this.dataService
-            .MarkBuildingShapeAsComplete(this.buildingFeatureId)
-            .subscribe((res) => {
-              console.log(res);
-            });
-        }
-      });
+      this.dataService
+        .CreateBuilding(this.buildingDetails)
+        .pipe(
+          this.toastService.observe({
+            loading: 'Saving',
+            success: 'Saved',
+            error: 'Opps Error chi',
+          })
+        )
+        .subscribe((res) => {
+          if (res) {
+            this.toastService.success('Added Building Details');
+            this.detailsAdded = true;
+            this.dataService
+              .MarkBuildingShapeAsComplete(this.buildingFeatureId)
+              .subscribe((res) => {
+                this.throwMotivationalMessage();
+              });
+          }
+        });
     }
     //updare data or post data
+  }
+  throwMotivationalMessage() {
+    const motivationalMessages: Content[] = [
+      'You are the Best',
+      'GoodJob 👏',
+      'Dra dra Anay Bay bay go ! la zay mi di',
+      'Keep going ! ',
+      'CDRD loves you ❤️ ',
+    ];
+    var rand =
+      motivationalMessages[(Math.random() * motivationalMessages.length) | 0];
+    this.toastService.show(rand, { duration: 5000 });
   }
 
   getFormValue(controlName: string) {
