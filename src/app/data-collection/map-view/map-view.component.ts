@@ -35,6 +35,7 @@ export class MapViewComponent implements OnInit {
   accuracy!: number;
 
   dataLoaded: boolean = false;
+  featureClicked: boolean = false;
   selectedFeature = {};
 
   types = ['Plots', 'Buildings'];
@@ -65,6 +66,7 @@ export class MapViewComponent implements OnInit {
   }
 
   resetHighlight(e: any) {
+    this.featureClicked = false;
     var layer = e.target;
     layer.setStyle({
       weight: 0.5,
@@ -110,6 +112,7 @@ export class MapViewComponent implements OnInit {
               click: (e) => {
                 this.map.fitBounds(e.target.getBounds());
                 this.selectedFeature = e.target.feature.properties;
+                this.featureClicked = true;
                 sessionStorage.setItem(
                   'plotFeatureId',
                   e.target.feature.properties.plotFeatureId
@@ -127,11 +130,60 @@ export class MapViewComponent implements OnInit {
       });
   }
 
-  fetchBuildingGeojson() {}
-
-  onFeatureTypeChange(event: any) {
-    sessionStorage.setItem('featureType', event.target.value);
-    window.location.reload();
+  fetchBuildingGeojson() {
+    this.dataService
+      .GetBuildingShapeFile()
+      .pipe(
+        this.toastService.observe({
+          loading: 'Loading Shapefiles all the way from DHS office la',
+          success: 'Loaded',
+          error: 'Opps',
+        })
+      )
+      .subscribe((res) => {
+        this.dataLoaded = true;
+        let geojson = res[0][0].jsonb_build_object;
+        this.buildingMap = L.geoJSON(geojson, {
+          pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+              radius: 4,
+              fillColor:
+                feature.properties.isCompleted === 'true' ? 'green' : 'red',
+              color:
+                feature.properties.isCompleted === 'true' ? 'green' : 'red',
+              weight: 1,
+              opacity: 1,
+              fillOpacity: 1,
+            });
+          },
+          onEachFeature: (feature, layer) => {
+            layer.on({
+              mouseover: (e) => {
+                e.target.setStyle({
+                  weight: 2,
+                  color: 'yellow',
+                });
+              },
+              mouseout: this.resetHighlight,
+              click: (e) => {
+                // this.map.fitBounds(e.target.getBounds());
+                this.selectedFeature = e.target.feature.properties;
+                this.featureClicked = true;
+                sessionStorage.setItem(
+                  'buildingFeatureId',
+                  e.target.feature.properties.buildingFeatureId
+                );
+                sessionStorage.setItem(
+                  'featureProperties',
+                  JSON.stringify(e.target.feature.properties)
+                );
+              },
+            });
+          },
+        });
+        this.map.addLayer(this.buildingMap);
+        this.map.fitBounds(this.buildingMap.getBounds());
+      });
   }
 
   getLocation(): void {
@@ -168,6 +220,7 @@ export class MapViewComponent implements OnInit {
     }
 
     if (this.featureTypeSelected === 'Buildings') {
+      this.router.navigate(['editBuilding']);
     }
   }
 }

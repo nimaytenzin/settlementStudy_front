@@ -1,26 +1,22 @@
-<div style="text-align:center">
-	<p>
-		Feature Type: {{ featureTypeSelected  }}
-	</p>
-	<p *ngIf="plotFeatureId">
-		Plot Feature ID: {{ plotFeatureId  }}
-	</p>
-	<p *ngIf="buildingFeatureId">
-		Building Feature ID: {{ buildingFeatureId }}
-	</p>
-	
-	<input type="file" class="custom-file-input" (change)="handleUpload($event)">
-	<p *ngIf="fileUploaded" class="mt-12">
-		Image Uploaded
-	</p>
+<div style="text-align: center">
+  <p>Feature Type: {{ featureTypeSelected }}</p>
+  <p *ngIf="plotFeatureId !== null">Plot Feature ID: {{ plotFeatureId }}</p>
+  <p *ngIf="buildingFeatureId !== null">
+    Building Feature ID: {{ buildingFeatureId }}
+  </p>
 
+  <input
+    type="file"
+    class="custom-file-input"
+    (change)="handleUpload($event)"
+  />
+  <p *ngIf="fileUploaded" class="mt-12">Image Uploaded</p>
 
-
-	<button class="mt-6 w-full   p-2 rounded"  [ngClass]="fileUploaded ? 'bg-green-500 text-gray-100' : 'bg-gray-300 '" (click)="goBack()" >
-		Back
-	</button>
-
-	
-
+  <button
+    class="mt-6 w-full p-2 rounded"
+    [ngClass]="fileUploaded ? 'bg-green-500 text-gray-100' : 'bg-gray-300 '"
+    (click)="goBack()"
+  >
+    Back
+  </button>
 </div>
-

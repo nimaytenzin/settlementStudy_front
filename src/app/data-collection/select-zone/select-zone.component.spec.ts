@@ -8,9 +8,8 @@ describe('SelectZoneComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SelectZoneComponent ]
-    })
-    .compileComponents();
+      declarations: [SelectZoneComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SelectZoneComponent);
     component = fixture.componentInstance;

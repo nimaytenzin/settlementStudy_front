@@ -8,34 +8,12 @@
   >
     <div class="flex justify-between my-1">
       <p class="text-center">Building Feature ID: {{ buildingFeatureId }}</p>
-      <p class="text-center">Unit ID: {{ unitId }}</p>
-    </div>
-
-    <div
-      class="flex border mt-2 border-green-300 rounded-md flex-col gap-2 justify-center text-sm p-6"
-    >
-      <button
-        class="bg-green-500 text-white p-2 rounded"
-        (click)="addHousehold()"
-      >
-        Add Household
-      </button>
-      <p class="text-xs">Click to Edit Details</p>
-
-      <div class="flex mt-4 gap-2 flex-wrap justify-center">
-        <div
-          *ngFor="let household of households"
-          class="px-6 text-xs py-3 bg-blue-500 rounded text-yellow-100"
-        >
-          HId: {{ household.id }}
-          <p class="mt-2" (click)="editHousehold(household)">Edit</p>
-        </div>
-      </div>
+      <p class="text-center">Unit ID:</p>
     </div>
 
     <div id="formContainer" class="mt-2 p-4 text-sm">
       <p class="font-semibold mb-4">Unit Information</p>
-      <form [formGroup]="editUnitForm">
+      <form [formGroup]="addUnitForm">
         <div class="my-2">
           <p class="text-sm mb-2 text-gray-700 text-left w-full">
             Locked?No One? Cannot Get Information?
@@ -178,7 +156,8 @@
               </p>
               <div class="w-full rounded-lg">
                 <input
-                  formControlName="businessName"
+                  type="text"
+                  formControlName="businessType"
                   class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
                 />
               </div>
@@ -429,7 +408,7 @@
           class="w-1/2 bg-green-500 text-white p-2 rounded"
           (click)="saveData()"
         >
-          Udpate
+          Save
         </button>
         <button
           class="w-1/2 bg-gray-300 text-gray-400 p-2 rounded"

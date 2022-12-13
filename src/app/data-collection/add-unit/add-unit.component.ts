@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import {
   UnitUses,
   YesNoOptions,
@@ -5,62 +6,58 @@ import {
   BusinessType,
   BusinessTurnOvers,
   IUnit,
-  IHousehold,
 } from './../../services/staticData';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from 'src/app/services/dataServices';
-import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
-  selector: 'app-edit-unit',
-  templateUrl: './edit-unit.component.html',
-  styleUrls: ['./edit-unit.component.css'],
+  selector: 'app-add-unit',
+  templateUrl: './add-unit.component.html',
+  styleUrls: ['./add-unit.component.css'],
 })
-export class EditUnitComponent implements OnInit {
+export class AddUnitComponent implements OnInit {
   buildingFeatureId: number = Number(
     sessionStorage.getItem('buildingFeatureId')
   );
-  detailsAdded: boolean = false;
   isLocked: boolean = false;
   unitDetails = {} as IUnit;
-  unitId: any;
 
   unitUse: String = '';
   bedRooms: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  editUnitForm = new FormGroup({
-    isLocked: new FormControl(),
-    number: new FormControl(),
-    floorLevel: new FormControl(),
-    bedrooms: new FormControl(),
-    use: new FormControl(),
-    ownership: new FormControl(),
-    rent: new FormControl(),
+  addUnitForm = new FormGroup({
+    isLocked: new FormControl(''),
+    number: new FormControl(null),
+    floorLevel: new FormControl(null),
+    bedrooms: new FormControl(null),
+    use: new FormControl(null),
+    ownership: new FormControl(null),
+    rent: new FormControl(null),
 
-    businessName: new FormControl(),
-    businessType: new FormControl(),
-    businessTurnover: new FormControl(),
-    businessContact: new FormControl(),
+    businessName: new FormControl(null),
+    businessType: new FormControl(null),
+    businessTurnover: new FormControl(null),
+    businessContact: new FormControl(null),
 
-    institutionName: new FormControl(),
-    institutionEstablishmentYear: new FormControl(),
-    institutionStaffs: new FormControl(),
-    institutionStudents: new FormControl(),
-    institutionContact: new FormControl(),
+    institutionName: new FormControl(null),
+    institutionEstablishmentYear: new FormControl(null),
+    institutionStaffs: new FormControl(null),
+    institutionStudents: new FormControl(null),
+    institutionContact: new FormControl(null),
 
-    religiousInstitionName: new FormControl(),
-    religiousInstituionEstablishmentYear: new FormControl(),
-    religiousInstitutionMonks: new FormControl(),
-    religiousInstitutionLopons: new FormControl(),
-    religiousInstitutionContact: new FormControl(),
+    religiousInstitionName: new FormControl(null),
+    religiousInstituionEstablishmentYear: new FormControl(null),
+    religiousInstitutionMonks: new FormControl(null),
+    religiousInstitutionLopons: new FormControl(null),
+    religiousInstitutionContact: new FormControl(null),
 
-    officeName: new FormControl(),
-    officeType: new FormControl(),
-    officeEstablishmentYear: new FormControl(),
-    officeContact: new FormControl(),
+    officeName: new FormControl(null),
+    officeType: new FormControl(null),
+    officeEstablishmentYear: new FormControl(null),
+    officeContact: new FormControl(null),
 
-    remarks: new FormControl(),
+    remarks: new FormControl(null),
   });
 
   isLockedOptions: String[] = YesNoOptions;
@@ -81,36 +78,13 @@ export class EditUnitComponent implements OnInit {
   businessTypes: String[] = BusinessType;
   businessTurnovers: String[] = BusinessTurnOvers;
 
-  households: any[] = [];
   constructor(
     private dataService: DataService,
-    private route: ActivatedRoute,
     private router: Router,
     private toastService: HotToastService
   ) {}
 
-  ngOnInit(): void {
-    this.unitId = this.route.snapshot.paramMap.get('unitId');
-    this.fetchDataIfExists();
-    this.fetchHouseholds();
-  }
-  fetchDataIfExists() {
-    this.dataService.GetUnitDetails(this.unitId).subscribe((res) => {
-      if (res) {
-        let data: IUnit = res;
-        this.unitUse = data.use!;
-        this.editUnitForm.patchValue({ ...data });
-      }
-    });
-  }
-
-  fetchHouseholds() {
-    this.dataService.GetAllHouseholdsByUnit(this.unitId).subscribe((res) => {
-      if (res) {
-        this.households = res;
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   onIsLockedSelect(target: any) {
     if (target.value === 'Yes') {
@@ -136,7 +110,7 @@ export class EditUnitComponent implements OnInit {
     this.unitDetails.businessName = this.getFormValue('businessName');
     this.unitDetails.businessType = this.getFormValue('businessType');
     this.unitDetails.businessTurnover = this.getFormValue('businessTurnover');
-    this.unitDetails.businessContact = this.getFormValue('businessContact');
+    this.unitDetails.businessContact = this.getFormValue('usinessContact');
 
     this.unitDetails.institutionName = this.getFormValue('institutionName');
     this.unitDetails.institutionEstablishmentYear = this.getFormValue(
@@ -174,12 +148,13 @@ export class EditUnitComponent implements OnInit {
 
     this.unitDetails.remarks = this.getFormValue('remarks');
 
+    console.log(this.unitDetails);
     this.dataService
-      .UpdateUnitDetails(this.unitId, this.unitDetails)
+      .CreateUnit(this.unitDetails)
       .pipe(
         this.toastService.observe({
-          loading: 'Updating',
-          success: 'Updated',
+          loading: 'Saving',
+          success: 'Saved',
           error: 'Opps Error chi',
         })
       )
@@ -189,15 +164,10 @@ export class EditUnitComponent implements OnInit {
   }
 
   getFormValue(controlName: string) {
-    return this.editUnitForm.get(controlName)?.value!;
+    return this.addUnitForm.get(controlName)?.value!;
   }
+
   backToBuilding() {
     this.router.navigate(['editBuilding']);
-  }
-  addHousehold() {
-    this.router.navigate(['addHousehold', this.unitId]);
-  }
-  editHousehold(household: any) {
-    this.router.navigate(['editHousehold', this.unitId, household.id]);
   }
 }

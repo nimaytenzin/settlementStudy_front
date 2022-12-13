@@ -1,3 +1,4 @@
+import { IBuilding, IUnit, IHousehold, IMember } from './staticData';
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
@@ -51,7 +52,7 @@ export interface IFootpath {
   providedIn: 'root',
 })
 export class DataService {
-  API_URL = 'http://202.144.157.89/settlement_back';
+  API_URL = 'http://localhost:3010';
 
   constructor(private http: HttpClient) {}
 
@@ -137,200 +138,140 @@ export class DataService {
       .pipe(catchError(this.handleError));
   }
 
-  markPlotShapefileAsCompleted(featureId: number) {
+  //BUILDINGS
+  GetBuildingShapeFile() {
     return this.http
-      .put<any>(`${this.API_URL}/plots/set-done/${featureId}`, this.httpOptions)
+      .get<any>(`${this.API_URL}/building-shape`)
       .pipe(catchError(this.handleError));
   }
 
-  //images
-  uploadImage(item: any) {
+  CreateBuilding(data: IBuilding) {
     return this.http
-      .post<any>(`${this.API_URL}/images/add-image`, item, this.httpOptions)
+      .post<any>(`${this.API_URL}/building`, data, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  getImages(ftype: string, fid: number) {
+  findBuildngByFeatureId(buildingFeatureId: number) {
     return this.http
       .get<any>(
-        `${this.API_URL}/images/get-image/${ftype}/${fid}`,
+        `${this.API_URL}/building/fid/${buildingFeatureId}`,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
-
-  //roads
-  getRoadsByPlan(planId: number) {
+  updateBuildingDetails(buildingFeatureId: number, buildingDetails: IBuilding) {
     return this.http
-      .get<any>(
-        `${this.API_URL}/shapefile/get-roads/${planId}`,
+      .patch<any>(
+        `${this.API_URL}/building/fid/${buildingFeatureId}`,
+        buildingDetails,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
-  getRoadSegmentDetails(roadFeatureId: number) {
-    return this.http
-      .get<any>(
-        `${this.API_URL}/roads/get-road/${roadFeatureId}`,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  postRoadSegmentDetails(roadDetails: any) {
+  UploadBuildingImage(item: any, buildingFeatureId: number) {
     return this.http
       .post<any>(
-        `${this.API_URL}/roads/add-road`,
-        roadDetails,
-        this.httpOptions
+        `${this.API_URL}/building-image/${buildingFeatureId}`,
+        item,
+        this.fileUploadHeaders
       )
       .pipe(catchError(this.handleError));
   }
-  updateRoadSegmentDetails(roadDetails: any, roadFeatureId: number) {
-    return this.http
-      .put<any>(
-        `${this.API_URL}/roads/update-road/${roadFeatureId}`,
-        roadDetails,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  markRoadShapefileAsCompleted(featureId: number) {
-    return this.http
-      .put<any>(`${this.API_URL}/roads/set-done/${featureId}`, this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
-
-  //buildings
-  getBuildingsByPlan(planId: number) {
+  GetBuildingImages(buildingFeatureId: number) {
     return this.http
       .get<any>(
-        `${this.API_URL}/shapefile/get-buildings/${planId}`,
+        `${this.API_URL}/building-image/fid/${buildingFeatureId}`,
+        this.fileUploadHeaders
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  MarkBuildingShapeAsComplete(featureId: number) {
+    return this.http
+      .patch<any>(
+        `${this.API_URL}/building-shape/set-done/${featureId}`,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
 
-  getZhicharBuildingDetails(structureId: number) {
+  //UNITS
+  CreateUnit(data: IUnit) {
+    return this.http
+      .post<any>(`${this.API_URL}/unit`, data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  GetAllUnitsByBuilding(buildingFeatureId: number) {
     return this.http
       .get<any>(
-        `https://zhichar.ddnsfree.com/hpi/building/get/${structureId}`,
+        `${this.API_URL}/unit/building/${buildingFeatureId}`,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+  GetUnitDetails(id: number) {
+    return this.http
+      .get<any>(`${this.API_URL}/unit/${id}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  UpdateUnitDetails(id: number, unitDetails: IUnit) {
+    return this.http
+      .patch<any>(`${this.API_URL}/unit/${id}`, unitDetails, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  //HOUSEHOLDS
+  CreateHousehold(data: IHousehold) {
+    return this.http
+      .post<any>(`${this.API_URL}/household`, data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  GetAllHouseholdsByUnit(unitId: number) {
+    return this.http
+      .get<any>(`${this.API_URL}/household/unit/${unitId}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  GetHouseholdDetails(id: number) {
+    return this.http
+      .get<any>(`${this.API_URL}/household/${id}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  UpdateHouseholdDetails(id: number, householdDetails: IHousehold) {
+    return this.http
+      .patch<any>(
+        `${this.API_URL}/household/${id}`,
+        householdDetails,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
 
-  //footpaths
-
-  getFootpathsByPlan(planId: number) {
+  //HOUSEHOLDS
+  CreateMember(data: IMember) {
+    return this.http
+      .post<any>(`${this.API_URL}/member`, data, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+  GetAllMemberByHousehold(householdId: number) {
     return this.http
       .get<any>(
-        `${this.API_URL}/shapefile/get-footpaths/${planId}`,
+        `${this.API_URL}/member/household/${householdId}`,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
   }
-
-  getFootpathDetails(footpathFid: number) {
+  GetMemberDetails(id: number) {
     return this.http
-      .get<any>(
-        `${this.API_URL}/footpaths/get-path/${footpathFid}`,
-        this.httpOptions
-      )
+      .get<any>(`${this.API_URL}/member/${id}`, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  postFootpathDetails(footpathDetails: any) {
+  UpdateMemberDetails(id: number, memberDetails: IMember) {
     return this.http
-      .post<any>(
-        `${this.API_URL}/footpaths/add-path`,
-        footpathDetails,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-  updateFootpathDetails(fid: number, footpathDetails: any) {
-    return this.http
-      .put<any>(
-        `${this.API_URL}/footpaths/update-path/${fid}`,
-        footpathDetails,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  footpathSetDone(fid: number) {
-    return this.http
-      .put<any>(`${this.API_URL}/footpaths/set-done/${fid}'`, this.httpOptions)
-      .pipe(catchError(this.handleError));
-  }
-
-  //wetland
-  getWetlandsBySpatialPlan(spatialPlanId: number) {
-    return this.http
-      .get<any>(`${this.API_URL}/shapefile/get-wetlands/${spatialPlanId}`)
-      .pipe(catchError(this.handleError));
-  }
-
-  markWetlandAsCompleted(featureId: number) {
-    return this.http
-      .put<any>(
-        `${this.API_URL}/wetlands/set-done/${featureId}`,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-  updateWetlandRemakrs(proposalDetails: IProposal) {
-    return this.http
-      .put<any>(
-        `${this.API_URL}/wetlands/updateRemarks`,
-        proposalDetails,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  getWetlandDetails(proposalFeatureId: number) {
-    return this.http
-      .get<any>(
-        `${this.API_URL}/wetlands/getDetails/${proposalFeatureId}`,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  //proposals
-  getProposalsBySpatialPlan(spatialPlanId: number) {
-    return this.http
-      .get<any>(`${this.API_URL}/shapefile/get-proposals/${spatialPlanId}`)
-      .pipe(catchError(this.handleError));
-  }
-
-  markProposalShapefileAsCompleted(featureId: number) {
-    return this.http
-      .put<any>(
-        `${this.API_URL}/proposals/set-done/${featureId}`,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-  //unimplemented
-  updateProposalRemarks(proposalDetails: IProposal) {
-    return this.http
-      .put<any>(
-        `${this.API_URL}/proposals/updateRemarks`,
-        proposalDetails,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  //unimplemented
-  getProposalDetails(proposalFeatureId: number) {
-    return this.http
-      .get<any>(
-        `${this.API_URL}/proposals/getDetails/${proposalFeatureId}`,
+      .patch<any>(
+        `${this.API_URL}/member/${id}`,
+        memberDetails,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));

@@ -9,6 +9,7 @@ type Content = string | TemplateRef<any> | Type<any>;
 
 interface IImage {
   uri: string;
+  filename: string;
 }
 
 @Component({
@@ -24,6 +25,7 @@ export class EditPlotComponent implements OnInit {
   ) {}
 
   plotFeatureId: number = Number(sessionStorage.getItem('plotFeatureId'));
+  selectedFeatureType = sessionStorage.getItem('featureType');
 
   developmentstatuses: String[] = DevelopmentStatuses;
   plotUses: String[] = PlotUses;
@@ -93,6 +95,13 @@ export class EditPlotComponent implements OnInit {
     if (this.detailsAdded) {
       this.dataService
         .updatePlotDetails(this.plotFeatureId, this.plotDetails)
+        .pipe(
+          this.toastService.observe({
+            loading: 'Updating',
+            success: 'Updated',
+            error: 'Opps Error chi',
+          })
+        )
         .subscribe((res) => {
           this.toastService.success('Plot Details Updated', { duration: 800 });
         });

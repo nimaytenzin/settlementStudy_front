@@ -9,26 +9,6 @@
     <div class="flex justify-between my-1">
       <p class="text-center">Building Feature ID: {{ buildingFeatureId }}</p>
       <p class="text-center">Unit ID: {{ unitId }}</p>
-      <p class="text-center">Household ID: {{ householdId }}</p>
-    </div>
-
-    <div
-      class="flex border mt-2 border-green-300 rounded-md flex-col gap-2 justify-center text-sm p-6"
-    >
-      <button class="bg-green-500 text-white p-2 rounded" (click)="addMember()">
-        Add Member
-      </button>
-      <p class="text-xs">Click to Edit Details</p>
-
-      <div class="flex mt-4 gap-2 flex-wrap justify-center">
-        <div
-          *ngFor="let member of members"
-          class="px-6 text-xs py-3 bg-blue-500 rounded text-yellow-100"
-        >
-          <p>{{ member.age }} {{ member.gender }} {{ member.name }}</p>
-          <p class="mt-2" (click)="editMember(member)">Edit</p>
-        </div>
-      </div>
     </div>
 
     <div id="formContainer" class="mt-2 p-4 text-sm">
@@ -311,7 +291,7 @@
           class="w-1/2 bg-green-500 text-white p-2 rounded"
           (click)="saveData()"
         >
-          Update
+          Save
         </button>
         <button
           class="w-1/2 bg-gray-300 text-gray-400 p-2 rounded"

@@ -37,7 +37,28 @@ export class CameraComponent implements OnInit {
         .uploadPlotImage(formData, this.plotFeatureId)
         .pipe(
           this.toastService.observe({
-            loading: 'Uploading! Atsi gu zhu na',
+            loading: 'Uploading Plot Image! Atsi gu zhu na',
+            success: 'Ya tupchi',
+            error: 'Error',
+          })
+        )
+        .subscribe((res) => {
+          if (res) {
+            this.fileUploaded = true;
+          }
+        });
+    }
+    if (this.featureTypeSelected === 'Buildings') {
+      const file = event.target.files[0];
+
+      let formData = new FormData();
+      formData.append('file', file);
+
+      this.dataService
+        .UploadBuildingImage(formData, this.buildingFeatureId)
+        .pipe(
+          this.toastService.observe({
+            loading: 'Uploading BuildingImage! Atsi gu zhu na',
             success: 'Ya tupchi',
             error: 'Error',
           })

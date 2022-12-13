@@ -1,0 +1,147 @@
+<div
+  class="h-screen flex flex-col w-full overflow-y-scroll"
+  style="width: 100vw"
+>
+  <div
+    id="plotDetails"
+    class="m-1 shadow-lg p-4 rounded font-normal font-mono text-gray-600 text-xs leading-relaxed tracking-wide"
+  >
+    <div class="flex justify-between my-1">
+      <p class="text-center">Building Feature ID: {{ buildingFeatureId }}</p>
+      <p class="text-center">Unit ID: {{ unitId }}</p>
+      <p class="text-center">Household ID: {{ householdId }}</p>
+    </div>
+
+    <div id="formContainer" class="mt-2 p-4 text-sm">
+      <p class="font-semibold mb-4">Household Member</p>
+      <p class="text-center">Member ID: {{ memberId }}</p>
+      <form [formGroup]="editMemberForm">
+        <div>
+          <div class="my-2">
+            <p class="text-sm mb-2 text-gray-700 text-left w-full">Name</p>
+            <div class="w-full rounded-lg">
+              <input
+                type="text"
+                formControlName="name"
+                class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
+              />
+            </div>
+          </div>
+
+          <div class="my-2">
+            <p class="text-sm mb-2 text-gray-700 text-left w-full">Age</p>
+            <div class="w-full rounded-lg">
+              <input
+                type="number"
+                formControlName="age"
+                class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
+              />
+            </div>
+          </div>
+
+          <div class="my-2">
+            <p class="text-sm mb-2 text-gray-700 text-left w-full">Gender</p>
+            <div class="w-full rounded-lg">
+              <select
+                formControlName="gender"
+                class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
+              >
+                <option
+                  *ngFor="let option of genders"
+                  [value]="option"
+                  class="w-full"
+                >
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="my-2">
+            <p class="text-sm mb-2 text-gray-700 text-left w-full">
+              Occupation
+            </p>
+            <div class="w-full rounded-lg">
+              <select
+                formControlName="occupation"
+                class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
+              >
+                <option
+                  *ngFor="let option of occupations"
+                  [value]="option"
+                  class="w-full"
+                >
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="my-2">
+            <p class="text-sm mb-2 text-gray-700 text-left w-full">Workplace</p>
+            <div class="w-full rounded-lg">
+              <input
+                type="text"
+                formControlName="workplace"
+                class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
+              />
+            </div>
+          </div>
+
+          <div class="my-2">
+            <p class="text-sm mb-2 text-gray-700 text-left w-full">
+              Travel Mode
+            </p>
+            <div class="w-full rounded-lg">
+              <select
+                formControlName="travelMode"
+                class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
+              >
+                <option
+                  *ngFor="let option of travelModes"
+                  [value]="option"
+                  class="w-full"
+                >
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="my-2">
+            <p class="text-sm mb-2 text-gray-700 text-left w-full">
+              education Level
+            </p>
+            <div class="w-full rounded-lg">
+              <select
+                formControlName="educationLevel"
+                class="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded p-2 focus:outline-none focus:ring-blue-300 focus:border-blue-300"
+              >
+                <option
+                  *ngFor="let option of educationLevels"
+                  [value]="option"
+                  class="w-full"
+                >
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="flex w-full gap-2 mt-4">
+        <button
+          class="w-1/2 bg-green-500 text-white p-2 rounded"
+          (click)="save()"
+        >
+          Update
+        </button>
+        <button
+          class="w-1/2 bg-gray-300 text-gray-400 p-2 rounded"
+          (click)="backToHouseHold()"
+        >
+          Back To Household
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
