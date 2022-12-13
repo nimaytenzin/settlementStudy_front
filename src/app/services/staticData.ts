@@ -186,6 +186,7 @@ export const PlotUses: String[] = [
   'Commercial',
   'Wetlands',
   'Kamzhing',
+  'Orchards',
   'Open Spaces',
   'Institutional',
   'Services',
