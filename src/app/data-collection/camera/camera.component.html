@@ -8,9 +8,7 @@
 	<p *ngIf="buildingFeatureId">
 		Building Feature ID: {{ buildingFeatureId }}
 	</p>
-	<p class="my-6">
-		Upload Image 
-	</p>
+	
 	<input type="file" class="custom-file-input" (change)="handleUpload($event)">
 	<p *ngIf="fileUploaded" class="mt-12">
 		Image Uploaded

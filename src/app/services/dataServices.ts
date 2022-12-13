@@ -51,7 +51,7 @@ export interface IFootpath {
   providedIn: 'root',
 })
 export class DataService {
-  API_URL = 'http://localhost:3000';
+  API_URL = 'http://202.144.157.89/settlement_back';
 
   constructor(private http: HttpClient) {}
 

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { DataService } from './../../services/dataServices';
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import { Location } from '@angular/common';
 import { HotToastService } from '@ngneat/hot-toast';
 
 interface ITypes {
@@ -28,11 +27,8 @@ export class MapViewComponent implements OnInit {
     'https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png';
   map!: L.Map;
   plotMap = {} as L.GeoJSON;
-  roadMap = {} as L.GeoJSON;
+
   buildingMap = {} as L.GeoJSON;
-  footpathMap = {} as L.GeoJSON;
-  proposalMap = {} as L.GeoJSON;
-  wetlandMap = {} as L.GeoJSON;
 
   latitude!: number;
   longitude!: number;
@@ -41,11 +37,7 @@ export class MapViewComponent implements OnInit {
   dataLoaded: boolean = false;
   selectedFeature = {};
 
-  selectedSpatialPlanId = Number(
-    sessionStorage.getItem('selectedSpatialPlanId')
-  );
-
-  types = ['Plots', 'Wetlands', 'Roads', 'Footpaths', 'Proposals'];
+  types = ['Plots', 'Buildings'];
   featureTypeSelected = sessionStorage.getItem('featureType');
 
   ngOnInit(): void {
@@ -54,9 +46,7 @@ export class MapViewComponent implements OnInit {
   }
 
   renderMap() {
-    var cartoMap = L.tileLayer(this.cartoPositronUrl);
     var satelliteMap = L.tileLayer(this.googleSatUrl);
-
     this.map = L.map('map', {
       zoomControl: false,
       layers: [satelliteMap],
@@ -64,7 +54,6 @@ export class MapViewComponent implements OnInit {
       renderer: L.canvas({ tolerance: 3 }),
     }).setView([27.4712, 89.64191], 13);
   }
-
   fetchGeojson() {
     const featureTypeSelected = sessionStorage.getItem('featureType');
     if (featureTypeSelected === 'Plots') {
@@ -138,40 +127,7 @@ export class MapViewComponent implements OnInit {
       });
   }
 
-  fetchBuildingGeojson() {
-    this.dataService
-      .getBuildingsByPlan(this.selectedSpatialPlanId)
-      .subscribe((res) => {
-        this.buildingMap = L.geoJSON(res, {
-          pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, {
-              radius: 4,
-              fillColor: feature.properties.done === 'true' ? 'red' : 'green',
-              color: feature.properties.done === 'true' ? 'red' : 'green',
-              weight: 1,
-              opacity: 1,
-              fillOpacity: 1,
-            });
-          },
-          onEachFeature: (feature, layer) => {
-            layer.on('click', (e) => {
-              sessionStorage.setItem(
-                'buildingFid',
-                feature.properties.structure_
-              );
-              sessionStorage.setItem(
-                'featureProperties',
-                JSON.stringify(e.target.feature.properties)
-              );
-              this.router.navigate(['editBuilding']);
-            });
-          },
-        });
-
-        this.map.addLayer(this.buildingMap);
-        this.map.fitBounds(this.buildingMap.getBounds());
-      });
-  }
+  fetchBuildingGeojson() {}
 
   onFeatureTypeChange(event: any) {
     sessionStorage.setItem('featureType', event.target.value);
@@ -182,14 +138,6 @@ export class MapViewComponent implements OnInit {
     if (navigator.geolocation) {
       const iconRetinaUrl = 'assets/mymarker.png';
       const iconUrl = 'assets/mymarker.png';
-      const iconDefault = L.icon({
-        iconRetinaUrl,
-        iconUrl,
-        iconSize: [20, 20],
-        popupAnchor: [1, -34],
-        tooltipAnchor: [16, -28],
-        shadowSize: [41, 41],
-      });
 
       const options = {
         enableHighAccuracy: true,
@@ -203,20 +151,10 @@ export class MapViewComponent implements OnInit {
           this.latitude = position.coords.latitude;
           this.accuracy = position.coords.accuracy;
 
-          alert(this.latitude);
-          alert(this.longitude);
-
           L.circle([this.latitude, this.longitude], { radius: 20 }).addTo(
             this.map
           );
           this.map.flyTo([this.latitude, this.longitude], 19);
-          // if (this.accuracy > 100) {
-
-          //
-          // } else {
-          //   L.circle([this.latitude, this.longitude], {radius: 20}).addTo(this.map);
-          //   this.map.flyTo([this.latitude, this.longitude], 19);
-          // }
         },
         (err) => {},
         options

@@ -35,10 +35,16 @@ export class CameraComponent implements OnInit {
     if (this.featureTypeSelected === 'Plots') {
       this.dataService
         .uploadPlotImage(formData, this.plotFeatureId)
+        .pipe(
+          this.toastService.observe({
+            loading: 'Uploading! Atsi gu zhu na',
+            success: 'Ya tupchi',
+            error: 'Error',
+          })
+        )
         .subscribe((res) => {
           if (res) {
             this.fileUploaded = true;
-            this.toastService.success('Plot Image Added');
           }
         });
     }
