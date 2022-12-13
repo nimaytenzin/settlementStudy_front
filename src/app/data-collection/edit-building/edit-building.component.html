@@ -1,6 +1,460 @@
+<div class="h-screen flex flex-col w-full overflow-y-scroll" style="width:100vw">
+    <div id="plotDetails"
+        class="m-1 shadow-lg p-4 rounded font-normal font-mono text-gray-600 text-xs leading-relaxed tracking-wide ">
+        <div class="flex justify-between my-1">
+            <p>
+                Structure ID: {{ selectedBuildingFeature.buildingId }}
+            </p>
+        </div>
+        <div class="flex flex-col justify-center my-4 text-sm p-6" *ngIf="detailsAdded">
+            <button class=" bg-green-500 text-white p-2 rounded" (click)="takePhoto()">
+                Take Photographic Evidence
+            </button>
+            <div class="flex overflow-x-scroll mt-4 gap-4">
+                <img *ngFor="let image of images" src='http://202.144.157.89:4200/{{image.uri}}'
+                    style="height: 150px;width:auto">
+            </div>
+        </div>
 
-<div class="h-screen  p-4 overflow-y-scroll flex items-center justify-center flex-col">
-    <p *ngFor="let item of zhicharBuildingDetails | keyvalue">
-        {{item.key}} - {{item.value}}
-     </p>
-</div>
+        <div id="formContainer" class="mt-2 p-4 text-sm">
+            <form [formGroup]="editBuildingForm">
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Existancy Status
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="existancyStatus" class="
+                        w-full
+                        bg-gray-50
+                        border border-gray-300
+                        text-gray-900
+                        rounded
+                        p-2
+                        focus:outline-none
+                        focus:ring-blue-300
+                        focus:border-blue-300
+                        ">
+                            <option *ngFor="let status of existancyStatus" [value]="status" class="w-full">
+                                {{ status }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Associative Position
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="associativePosition" 
+                        class="
+                            w-full
+                            bg-gray-50
+                            border border-gray-300
+                            text-gray-900
+                            rounded
+                            p-2
+                            focus:outline-none
+                            focus:ring-blue-300
+                            focus:border-blue-300
+                            ">
+                            <option *ngFor="let position of associativePositions" [value]="position" class="w-full">
+                                {{ position }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                       Ownership Type
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="ownership" class="
+                            w-full
+                            bg-gray-50
+                            border border-gray-300
+                            text-gray-900
+                            rounded
+                            p-2
+                            focus:outline-none
+                            focus:ring-blue-300
+                            focus:border-blue-300
+                        ">
+                            <option *ngFor="let type of ownershipTypes" [value]="type" class="w-full">
+                                {{ type }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Floors
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="floors" class="
+                                                w-full
+                                                bg-gray-50
+                                                border border-gray-300
+                                                text-gray-900
+                                                rounded
+                                                p-2
+                                                focus:outline-none
+                                                focus:ring-blue-300
+                                                focus:border-blue-300
+                                            ">
+                            <option *ngFor="let floor of floors" [value]="floor" class="w-full">
+                                {{ floor }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Jamthog/Attic
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="jamthog" class="
+                                                                w-full
+                                                                bg-gray-50
+                                                                border border-gray-300
+                                                                text-gray-900
+                                                                rounded
+                                                                p-2
+                                                                focus:outline-none
+                                                                focus:ring-blue-300
+                                                                focus:border-blue-300
+                                                            ">
+                            <option *ngFor="let option of jamthogOptions" [value]="option" class="w-full">
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Basement
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="basement" class="
+                                                                w-full
+                                                                bg-gray-50
+                                                                border border-gray-300
+                                                                text-gray-900
+                                                                rounded
+                                                                p-2
+                                                                focus:outline-none
+                                                                focus:ring-blue-300
+                                                                focus:border-blue-300
+                                                            ">
+                            <option *ngFor="let option of basementOptions" [value]="option" class="w-full">
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Use
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="use" class="
+                                                                w-full
+                                                                bg-gray-50
+                                                                border border-gray-300
+                                                                text-gray-900
+                                                                rounded
+                                                                p-2
+                                                                focus:outline-none
+                                                                focus:ring-blue-300
+                                                                focus:border-blue-300
+                                                            ">
+                            <option *ngFor="let use of buildingUses" [value]="use" class="w-full">
+                                {{ use }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Age
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="floors" class="
+                                                                w-full
+                                                                bg-gray-50
+                                                                border border-gray-300
+                                                                text-gray-900
+                                                                rounded
+                                                                p-2
+                                                                focus:outline-none
+                                                                focus:ring-blue-300
+                                                                focus:border-blue-300
+                                                            ">
+                            <option *ngFor="let age of ageOptions" [value]="age" class="w-full">
+                                {{ age }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                       Major Renovation?
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="rennovation" class="
+                                                                w-full
+                                                                bg-gray-50
+                                                                border border-gray-300
+                                                                text-gray-900
+                                                                rounded
+                                                                p-2
+                                                                focus:outline-none
+                                                                focus:ring-blue-300
+                                                                focus:border-blue-300
+                                                            ">
+                            <option *ngFor="let option of renovationOptions" [value]="option" class="w-full">
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                       Rennovation Remarks
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <textarea formControlName="rennovationRemarks" class="
+                                                                                w-full
+                                                                                bg-gray-50
+                                                                                border border-gray-300
+                                                                                text-gray-900
+                                                                                rounded
+                                                                                p-2
+                                                                                focus:outline-none
+                                                                                focus:ring-blue-300
+                                                                                focus:border-blue-300
+                                                                            "></textarea>   
+                    </div>
+                </div>
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Building Style
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="rennovation" class="
+                                                                                                w-full
+                                                                                                bg-gray-50
+                                                                                                border border-gray-300
+                                                                                                text-gray-900
+                                                                                                rounded
+                                                                                                p-2
+                                                                                                focus:outline-none
+                                                                                                focus:ring-blue-300
+                                                                                                focus:border-blue-300
+                                                                                            ">
+                            <option *ngFor="let style of buildingStyles" [value]="style" class="w-full">
+                                {{ style }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Structure Type
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="type" class="
+                                                                                w-full
+                                                                                bg-gray-50
+                                                                                border border-gray-300
+                                                                                text-gray-900
+                                                                                rounded
+                                                                                p-2
+                                                                                focus:outline-none
+                                                                                focus:ring-blue-300
+                                                                                focus:border-blue-300
+                                                                            ">
+                            <option *ngFor="let type of structureTypes" [value]="type" class="w-full">
+                                {{ type }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                      Primary Material
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="material" class="
+                                                                                w-full
+                                                                                bg-gray-50
+                                                                                border border-gray-300
+                                                                                text-gray-900
+                                                                                rounded
+                                                                                p-2
+                                                                                focus:outline-none
+                                                                                focus:ring-blue-300
+                                                                                focus:border-blue-300
+                                                                            ">
+                            <option *ngFor="let type of materialTypes" [value]="type" class="w-full">
+                                {{ type }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Roof Type
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="roofType" class="
+                                                                                w-full
+                                                                                bg-gray-50
+                                                                                border border-gray-300
+                                                                                text-gray-900
+                                                                                rounded
+                                                                                p-2
+                                                                                focus:outline-none
+                                                                                focus:ring-blue-300
+                                                                                focus:border-blue-300
+                                                                            ">
+                            <option *ngFor="let type of roofTypes" [value]="type" class="w-full">
+                                {{ type }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Roof Material
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="roofMaterial" class="
+                                                                                w-full
+                                                                                bg-gray-50
+                                                                                border border-gray-300
+                                                                                text-gray-900
+                                                                                rounded
+                                                                                p-2
+                                                                                focus:outline-none
+                                                                                focus:ring-blue-300
+                                                                                focus:border-blue-300
+                                                                            ">
+                            <option *ngFor="let material of roofMaterials" [value]="material" class="w-full">
+                                {{ material }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                       Toilet Mode
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="toiletMode" class="
+                                                                                                w-full
+                                                                                                bg-gray-50
+                                                                                                border border-gray-300
+                                                                                                text-gray-900
+                                                                                                rounded
+                                                                                                p-2
+                                                                                                focus:outline-none
+                                                                                                focus:ring-blue-300
+                                                                                                focus:border-blue-300
+                                                                                            ">
+                            <option *ngFor="let mode of toiletModes" [value]="mode" class="w-full">
+                                {{ mode }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Toilet Type
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="toiletType" class="
+                                                                                                w-full
+                                                                                                bg-gray-50
+                                                                                                border border-gray-300
+                                                                                                text-gray-900
+                                                                                                rounded
+                                                                                                p-2
+                                                                                                focus:outline-none
+                                                                                                focus:ring-blue-300
+                                                                                                focus:border-blue-300
+                                                                                            ">
+                            <option *ngFor="let type of toiletTypes" [value]="type" class="w-full">
+                                {{ type }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                       Road Access
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="roadAccess" class="
+                                                                                                w-full
+                                                                                                bg-gray-50
+                                                                                                border border-gray-300
+                                                                                                text-gray-900
+                                                                                                rounded
+                                                                                                p-2
+                                                                                                focus:outline-none
+                                                                                                focus:ring-blue-300
+                                                                                                focus:border-blue-300
+                                                                                            ">
+                            <option *ngFor="let option of yesNoOptions" [value]="option" class="w-full">
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <p class="text-sm mb-2 text-gray-700 text-left w-full">
+                        Parking for Residents
+                    </p>
+                    <div class="w-full rounded-lg">
+                        <select formControlName="parking" class="
+                                                                                                w-full
+                                                                                                bg-gray-50
+                                                                                                border border-gray-300
+                                                                                                text-gray-900
+                                                                                                rounded
+                                                                                                p-2
+                                                                                                focus:outline-none
+                                                                                                focus:ring-blue-300
+                                                                                                focus:border-blue-300
+                                                                                            ">
+                            <option *ngFor="let option of parkingOptions" [value]="option" class="w-full">
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </form>
+            <div class="flex w-full gap-2 mt-4">
+                <button class=" w-1/2 bg-green-500 text-white p-2 rounded" (click)="saveData()">
+                    Save
+                </button>
+                <button class=" w-1/2 bg-gray-300 text-gray-400 p-2 rounded" (click)="goBackToMap()">
+                    Back To Map
+                </button>
+            </div>
+        </div>
+
+    </div>

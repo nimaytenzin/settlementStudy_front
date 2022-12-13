@@ -1,59 +1,50 @@
 import { DataService } from './../../services/dataServices';
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common'
-
+import { Location } from '@angular/common';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-camera',
   templateUrl: './camera.component.html',
-  styleUrls: ['./camera.component.css']
+  styleUrls: ['./camera.component.css'],
 })
 export class CameraComponent implements OnInit {
-
   constructor(
     private dataService: DataService,
-    private location:Location
-  ) { }
+    private location: Location,
+    private toastService: HotToastService
+  ) {}
 
   fileUploaded = false;
-  fid =0;
-  featureTypeSelected = sessionStorage.getItem('featureType')
+  fid = 0;
+  featureTypeSelected = sessionStorage.getItem('featureType');
+  fileName = '';
+  plotFeatureId: number = Number(sessionStorage.getItem('plotFeatureId'));
+  buildingFeatureId: number = Number(
+    sessionStorage.getItem('buildingFeatureId')
+  );
 
-  ngOnInit(): void {
-    if(this.featureTypeSelected === "Plots"){
-      this.fid = Number(sessionStorage.getItem('plotFid'))
-    }else if(this.featureTypeSelected === "Roads"){
-      this.fid = Number(sessionStorage.getItem("roadFid"))
-    } else if(this.featureTypeSelected ==='Footpaths'){
-      this.fid = Number(sessionStorage.getItem('footpathFid'))
-    }else if(this.featureTypeSelected === 'Proposals'){
-      this.fid = Number(sessionStorage.getItem('proposalFid'))
-    }else if(this.featureTypeSelected === 'Wetlands'){
-      this.fid = Number(sessionStorage.getItem("wetlandFid"))
-    }
-  }
-
-
+  ngOnInit(): void {}
 
   handleUpload(event: any) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      let jsonObject = {
-        "fid":this.fid ,
-        "ftype":this.featureTypeSelected,
-        "uri": reader.result
-      }
-      this.dataService.uploadImage(jsonObject).subscribe(response => {
-          this.fileUploaded = true
-      })  
 
-    };
+    let formData = new FormData();
+    formData.append('file', file);
+
+    if (this.featureTypeSelected === 'Plots') {
+      this.dataService
+        .uploadPlotImage(formData, this.plotFeatureId)
+        .subscribe((res) => {
+          if (res) {
+            this.fileUploaded = true;
+            this.toastService.success('Plot Image Added');
+          }
+        });
+    }
   }
 
-  goBack(){
-    this.location.back()  
+  goBack() {
+    this.location.back();
   }
-
 }

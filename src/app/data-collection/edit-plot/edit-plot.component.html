@@ -3,27 +3,9 @@
         class="m-1 shadow-lg p-4 rounded font-normal font-mono text-gray-600 text-xs leading-relaxed tracking-wide ">
        <div class="flex justify-between my-1">
         <p>
-            Plot ID: {{ plotFeatureProperty.plot_id  }}
+            Plot ID: {{ plotFeatureId  }}
         </p>
-        <p>
-            FeatureID: <strong> {{plotFeatureProperty.gid  }} </strong>
-        </p>
-       </div>
-        <p>
-            Precinct: <strong> {{plotFeatureProperty.precinct  }} </strong>
-        </p>
-        <p>
-            Max Height: <strong>{{ plotFeatureProperty.height  }} Floors</strong>
-        </p>
-        <p>
-            Coverage: <strong>{{plotFeatureProperty.coverage  }} %</strong>
-        </p>
-        <p>
-            Setbacks: {{ plotFeatureProperty.setback  }}
-        </p>
-        <p class="mt-1">
-            Uses: {{ plotFeatureProperty.uses  }}
-        </p>
+       
     </div>
 
     <div class="flex flex-col justify-center my-4 text-sm p-6" *ngIf="detailsAdded">
@@ -31,7 +13,7 @@
             Take Photographic Evidence
         </button>
         <div class="flex overflow-x-scroll mt-4 gap-4">
-            <img *ngFor="let image of images"  src='http://202.144.157.89:4200/{{image.uri}}'  style="height: 150px;width:auto">
+            <img *ngFor="let image of images"  src='http://localhost:3000/{{image.uri}}'  style="height: 150px;width:auto">
         </div>
     </div>
 
@@ -68,7 +50,7 @@
                 </p>
                 <div class="w-full rounded-lg">
                     <select 
-                        formControlName="plotUse"
+                        formControlName="use"
                         class="
                         w-full
                         bg-gray-50
@@ -87,35 +69,6 @@
                     </select>
                 </div>
             </div>
-
-
-            <div class="my-2">
-                <p class="text-sm mb-2 text-gray-700 text-left w-full">
-                   Maximum Building Height Constructed
-                </p>
-                <div class="w-full rounded-lg">
-                    <select 
-                        formControlName="maxHeight"
-                        class="
-                            w-full
-                            bg-gray-50
-                            border border-gray-300
-                            text-gray-900
-                            rounded
-                            p-2
-                            focus:outline-none
-                            focus:ring-blue-300
-                            focus:border-blue-300
-                        "
-                    >
-                    <option *ngFor="let height of BuildingHeights" [value]="height" class="w-full">
-                        {{ height }}
-                    </option>
-                    </select>
-                </div>
-            </div>
-
-
             <div class="my-2">
                 <p class="text-sm mb-2 text-gray-700 text-left w-full">
                     Remarks

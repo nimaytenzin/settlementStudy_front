@@ -1,9 +1,9 @@
 <div class="flex flex-col w-full">
 
-    <form [formGroup]="planSelectForm" (ngSubmit)="goToMapView()">
+    <form [formGroup]="selectSettlementForm" (ngSubmit)="goToMapView()">
         <div class="my-2 w-">
             <p class="text-sm mb-2 text-gray-700 text-left w-full ">
-                Dzongkhag/Thromde
+               Settlement Name 
             </p>
             <div class="w-full flex rounded-lg">
                 <select class="
@@ -16,10 +16,10 @@
                     appearance-none
                     focus:outline-none focus:ring-green-100 focus:border-green-100
                     "
-                    formControlName="selectedThromde"
-                    (change)="onThromdeSelect()">
-                    <option *ngFor="let thromde of thromdes" [value]="thromde.id" class="w-full">
-                        {{ thromde.thromde_name}}
+                    formControlName="selectedSettlement"
+                    >
+                    <option *ngFor="let settlement of settlements" [value]="settlement" class="w-full">
+                        {{ settlement}}
                     </option>
                 </select>
 
@@ -41,45 +41,7 @@
         </div>
 
 
-        <div class="my-2 w-">
-            <p class="text-sm mb-2 text-gray-700 text-left w-full ">
-                Spatial Plans
-            </p>
-            <div class="w-full flex rounded-lg">
-                <select 
-                required
-                formControlName="selectedSpatialPlan"
-                class="
-                w-full
-                bg-gray-50
-                border-t border-l border-b border-gray-300
-                text-gray-900
-                rounded-l
-                p-2
-                appearance-none
-                focus:outline-none focus:ring-green-100 focus:border-green-100
-              ">
-                    <option *ngFor="let plan of spatialPlans" [value]="plan.id" class="w-full">
-                        {{ plan.lap_name}}
-                    </option>
 
-                </select>
-                <div class="
-                flex
-                justify-center
-                items-center
-                rounded-r
-                border-t border-b border-r border-gray-300
-                bg-gray-50
-              ">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </div>
-            </div>
-        </div>
 
 
         <div class="my-2 w-">

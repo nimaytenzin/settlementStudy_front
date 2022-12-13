@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditWetlandComponent } from './edit-wetland.component';
+import { EditUnitComponent } from './edit-unit.component';
 
-describe('EditWetlandComponent', () => {
-  let component: EditWetlandComponent;
-  let fixture: ComponentFixture<EditWetlandComponent>;
+describe('EditUnitComponent', () => {
+  let component: EditUnitComponent;
+  let fixture: ComponentFixture<EditUnitComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditWetlandComponent ]
+      declarations: [ EditUnitComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditWetlandComponent);
+    fixture = TestBed.createComponent(EditUnitComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
