@@ -134,9 +134,7 @@ export class EditPlotComponent implements OnInit {
       'CDRD loves you ❤️ ',
     ];
     var rand =
-      motivationalMessages[
-        (Math.random() * this.motivationalMessages.length) | 0
-      ];
+      motivationalMessages[(Math.random() * motivationalMessages.length) | 0];
     this.toastService.show(rand, { duration: 5000 });
   }
 }
